@@ -1,0 +1,4 @@
+public enum MODE_BATAILLE
+{
+	DEMO, UN_JOUEUR, DEUX_JOUEURS;
+}
