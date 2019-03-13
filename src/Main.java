@@ -1,10 +1,14 @@
+import java.util.ArrayList;
+
 public class Main
 {
+	private static ArrayList<Bateau> m_boats;
 	private static Bateau b1 = new Bateau(BATEAU_TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3));
 	public static void main(String[] args) 
 	{
-		//Position p = new Position(3,3);
-		//System.out.println("x: " + b1.pos.x + "   y: " + b1.pos.y);
+		m_boats = new ArrayList<Bateau>();
+		m_boats.add(new Bateau(BATEAU_TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3)));
+		m_boats.add(new Bateau(BATEAU_TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
 		print();
 	}
 	
@@ -14,36 +18,33 @@ public class Main
 		{
 			for (int x = 0; x < 10; ++x)
 			{
-				System.out.print(".");
-				/*if (b1.o == ORIENTATION.H)
+				char to_print = '.';
+				
+				for (int i = 0; i < m_boats.size(); ++i)
 				{
-					if (y == b1.pos.y)
+					if (m_boats.get(i).o == ORIENTATION.H)
 					{
-						if ((x >= b1.pos.x) && (x < b1.pos.x + BATEAU_TYPE.toInt(b1.type)))
+						if (y == m_boats.get(i).pos.y)
 						{
-							System.out.print("-");
+							if ((x >= m_boats.get(i).pos.x) && (x < m_boats.get(i).pos.x + BATEAU_TYPE.toInt(m_boats.get(i).type)))
+							{
+								to_print = '_';
+							}
 						}
-						else
+					}
+					else
+					{
+						if (x == m_boats.get(i).pos.x)
 						{
-							System.out.print(".");
+							if ((y >= m_boats.get(i).pos.y) && (y < m_boats.get(i).pos.y + BATEAU_TYPE.toInt(m_boats.get(i).type)))
+							{
+								to_print = '|';
+							}
 						}
 					}
 				}
-				else
-				{
-					if (x == b1.pos.x)
-					{
-						if ((y >= b1.pos.y) && (y < b1.pos.y + BATEAU_TYPE.toInt(b1.type)))
-						{
-							System.out.print("|");
-						}
-						else
-						{
-							System.out.print(".");
-						}
-					}
-				}*/
-				System.out.print(" ");
+
+				System.out.print(to_print + " ");
 			}
 
 			System.out.print("\n");

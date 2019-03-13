@@ -17,7 +17,7 @@ public class Bateau
 	{
 		this.type = type;
 		this.o    = o;
-		this.pos  = new Position (pos.x, pos.y);
+		this.pos  = p;
 		m_damage = 0;
 	}
 
