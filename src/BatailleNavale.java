@@ -2,6 +2,15 @@ import java.util.ArrayList;
 
 import core.*;
 
+/**
+ * Classe qui blablabla et
+ * blablabla et bliblanlu et
+ * bloblobloblan. 
+ * <p>De plus,  
+ * blabliblablu
+ * 
+ * @author Adrien COURNAND
+ */
 public class BatailleNavale 
 {
 		private static ArrayList<Bateau> m_boats;
@@ -10,6 +19,9 @@ public class BatailleNavale
 			m_boats = new ArrayList<Bateau>();
 			m_boats.add(new Bateau(BATEAU_TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3)));
 			m_boats.add(new Bateau(BATEAU_TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
+			m_boats.add(new Bateau(BATEAU_TYPE.CUIRASSE, ORIENTATION.H, new Position(4,8)));
+			m_boats.add(new Bateau(BATEAU_TYPE.ZODIAC, ORIENTATION.H, new Position(6,5)));
+			m_boats.add(new Bateau(BATEAU_TYPE.ZODIAC, ORIENTATION.V, new Position(6,3)));
 			print();
 		}
 		
