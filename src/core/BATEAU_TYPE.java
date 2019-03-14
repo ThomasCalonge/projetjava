@@ -1,3 +1,5 @@
+package core;
+
 public enum BATEAU_TYPE
 {
     PORTE_AVION,

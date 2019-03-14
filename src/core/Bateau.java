@@ -1,3 +1,5 @@
+package core;
+
 public class Bateau
 {
 	public BATEAU_TYPE type;
