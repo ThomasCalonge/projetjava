@@ -57,11 +57,19 @@ public class Bateau
 		m_totalDamages = 0;
 	}
 
-	public void setDamage (final int damage_pos)
-	{ m_damage |= (1 << damage_pos); ++m_totalDamages; }
+	public boolean setDamage (final int damage_pos)
+	{
+		final int oldDamages = m_damage;
+		m_damage |= (1 << damage_pos);
+		
+		if (m_damage != oldDamages)
+			++m_totalDamages;
+		
+		return m_damage != oldDamages;
+	}
 
-	public int getDamage (final int damage_pos)
-	{ return (m_damage & (1 << damage_pos)) >> damage_pos; }
+	public boolean getDamage (final int damage_pos)
+	{ return ((m_damage & (1 << damage_pos)) >> damage_pos) == 1; }
 	
 	public boolean isDestroyed ()
 	{ return m_totalDamages >= TYPE.toInt(type); }

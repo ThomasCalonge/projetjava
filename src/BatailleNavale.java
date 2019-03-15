@@ -21,7 +21,12 @@ public class BatailleNavale
 			m_boats.add(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
 			m_boats.add(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.H, new Position(4,8)));
 			m_boats.add(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(6,5)));
-			m_boats.add(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(6,3)));
+			m_boats.add(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(3,6)));
+			
+			m_boats.get(0).setDamage(1);
+			m_boats.get(0).setDamage(0);
+			
+			m_boats.get(1).setDamage(1);
 			print();
 		}
 		
@@ -41,7 +46,7 @@ public class BatailleNavale
 							{
 								if ((x >= m_boats.get(i).pos.x) && (x < m_boats.get(i).pos.x + Bateau.TYPE.toInt(m_boats.get(i).type)))
 								{
-									to_print = '_';
+									to_print = m_boats.get(i).getDamage(x - m_boats.get(i).pos.x) ? 'x' : '-';
 								}
 							}
 						}
@@ -51,7 +56,7 @@ public class BatailleNavale
 							{
 								if ((y >= m_boats.get(i).pos.y) && (y < m_boats.get(i).pos.y + Bateau.TYPE.toInt(m_boats.get(i).type)))
 								{
-									to_print = '|';
+									to_print = m_boats.get(i).getDamage(y - m_boats.get(i).pos.y) ? 'x' : '|';
 								}
 							}
 						}

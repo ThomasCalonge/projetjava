@@ -15,20 +15,14 @@ public class Joueur
 
 	public String getName() { return m_name; }
 
-	public ATTAQUE_STATUS getAttacked(final Position pos)
-	{
-		return ATTAQUE_STATUS.EAU;
-	}
-
 	public void placeBoat(final Bateau b)
 	{
 		m_boats.add(b);
 	}
 	
-	public ATTAQUE_STATUS isAttack(final Position pos)
+	public ATTAQUE_STATUS isAttacked(final Position pos)
 	{
 		ATTAQUE_STATUS ret = ATTAQUE_STATUS.EAU;
-		
 		
 		for (Bateau b: m_boats)
 		{
@@ -37,15 +31,19 @@ public class Joueur
 				case H:
 				{
 					if (testHCollision(b, pos))
-					{						
-						ret = ATTAQUE_STATUS.TOUCHE;
+					{
+						b.setDamage(pos.x - b.pos.x);
+						ret = b.isDestroyed() ? ATTAQUE_STATUS.COULE : ATTAQUE_STATUS.TOUCHE;
 					}
 				} break;
 				
 				case V:
 				{
 					if(testVCollision(b, pos))
-						ret = ATTAQUE_STATUS.TOUCHE;
+					{	
+						b.setDamage(pos.y - b.pos.y);
+						ret = b.isDestroyed() ? ATTAQUE_STATUS.COULE : ATTAQUE_STATUS.TOUCHE;
+					}
 				} break;
 			}
 		}
