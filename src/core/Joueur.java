@@ -24,4 +24,58 @@ public class Joueur
 	{
 		m_boats.add(b);
 	}
+	
+	public ATTAQUE_STATUS isAttack(final Position pos)
+	{
+		ATTAQUE_STATUS ret = ATTAQUE_STATUS.EAU;
+		
+		
+		for (Bateau b: m_boats)
+		{
+			switch (b.o)
+			{
+				case H:
+				{
+					if (testHCollision(b, pos))
+					{						
+						ret = ATTAQUE_STATUS.TOUCHE;
+					}
+				} break;
+				
+				case V:
+				{
+					if(testVCollision(b, pos))
+						ret = ATTAQUE_STATUS.TOUCHE;
+				} break;
+			}
+		}
+		
+		return ret;
+	}
+	
+	private boolean testHCollision (final Bateau b, final Position pos)
+	{
+		boolean ret = false;
+		
+		if (pos.y == b.pos.y)
+		{
+			if ((pos.x >= b.pos.x) && (pos.x < b.pos.x + b.getSize()))
+				ret = true;
+		}
+		
+		return ret;
+	}
+	
+	private boolean testVCollision (final Bateau b, final Position pos)
+	{
+		boolean ret = false;
+		
+		if (pos.x == b.pos.x)
+		{
+			if ((pos.y >= b.pos.y) && (pos.y < b.pos.y + b.getSize()))
+				ret = true;
+		}
+		
+		return ret;
+	}
 }

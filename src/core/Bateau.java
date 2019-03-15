@@ -2,11 +2,44 @@ package core;
 
 public class Bateau
 {
-	public BATEAU_TYPE type;
+	public TYPE type;
 	public ORIENTATION o;
 	public Position pos;
 
 	private int m_damage;
+	private int m_totalDamages;
+	
+	public enum TYPE
+	{
+		PORTE_AVION,
+	    SOUS_MARIN,
+		CUIRASSE,
+		ZODIAC;
+		
+		static public int toInt (final TYPE t)
+	    {
+	        int ret = 0;
+	        switch (t)
+	        {
+	            case PORTE_AVION:
+	                ret = 5;
+	                break;
+	            
+	            case SOUS_MARIN:
+	                ret = 4;
+	                break;
+	            
+	            case CUIRASSE:
+	                ret = 3;
+					break;
+				
+				case ZODIAC:
+					ret = 1;
+					break;
+	        }
+	        return ret;
+	    }
+	}
 
 	/**
 	 * Constructeur
@@ -15,19 +48,23 @@ public class Bateau
 	 * @param o l'orientation du bateau
 	 * @param p la position du bateau
 	 */
-	public Bateau(final BATEAU_TYPE type, final ORIENTATION o, final Position p)
+	public Bateau(final TYPE type, final ORIENTATION o, final Position p)
 	{
 		this.type = type;
 		this.o    = o;
 		this.pos  = p;
 		m_damage = 0;
+		m_totalDamages = 0;
 	}
 
 	public void setDamage (final int damage_pos)
-	{ m_damage |= (1 << damage_pos); }
+	{ m_damage |= (1 << damage_pos); ++m_totalDamages; }
 
 	public int getDamage (final int damage_pos)
 	{ return (m_damage & (1 << damage_pos)) >> damage_pos; }
+	
+	public boolean isDestroyed ()
+	{ return m_totalDamages >= TYPE.toInt(type); }
 
-	public int getSize() { return BATEAU_TYPE.toInt(type); }
+	public int getSize() { return TYPE.toInt(type); }
 }

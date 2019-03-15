@@ -17,11 +17,11 @@ public class BatailleNavale
 		public static void main(String[] args) 
 		{
 			m_boats = new ArrayList<Bateau>();
-			m_boats.add(new Bateau(BATEAU_TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3)));
-			m_boats.add(new Bateau(BATEAU_TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
-			m_boats.add(new Bateau(BATEAU_TYPE.CUIRASSE, ORIENTATION.H, new Position(4,8)));
-			m_boats.add(new Bateau(BATEAU_TYPE.ZODIAC, ORIENTATION.H, new Position(6,5)));
-			m_boats.add(new Bateau(BATEAU_TYPE.ZODIAC, ORIENTATION.V, new Position(6,3)));
+			m_boats.add(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3)));
+			m_boats.add(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
+			m_boats.add(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.H, new Position(4,8)));
+			m_boats.add(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(6,5)));
+			m_boats.add(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(6,3)));
 			print();
 		}
 		
@@ -39,7 +39,7 @@ public class BatailleNavale
 						{
 							if (y == m_boats.get(i).pos.y)
 							{
-								if ((x >= m_boats.get(i).pos.x) && (x < m_boats.get(i).pos.x + BATEAU_TYPE.toInt(m_boats.get(i).type)))
+								if ((x >= m_boats.get(i).pos.x) && (x < m_boats.get(i).pos.x + Bateau.TYPE.toInt(m_boats.get(i).type)))
 								{
 									to_print = '_';
 								}
@@ -49,7 +49,7 @@ public class BatailleNavale
 						{
 							if (x == m_boats.get(i).pos.x)
 							{
-								if ((y >= m_boats.get(i).pos.y) && (y < m_boats.get(i).pos.y + BATEAU_TYPE.toInt(m_boats.get(i).type)))
+								if ((y >= m_boats.get(i).pos.y) && (y < m_boats.get(i).pos.y + Bateau.TYPE.toInt(m_boats.get(i).type)))
 								{
 									to_print = '|';
 								}
