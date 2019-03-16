@@ -1,8 +1,9 @@
 package core;
 
-public class Bataille
+public abstract class Bataille
 {
 	private Joueur[] m_players;
+	private int m_current_attacking_player;
 	
 	public enum TYPE
 	{
@@ -19,8 +20,12 @@ public class Bataille
 		DEUX_JOUEURS;
 	}
 	
-	public Bataille(final TYPE type)
+	public Bataille(final MODE mode)
 	{
 		m_players = new Joueur[2];
 	}
+	
+	public void initFirstAttackingPlayer() { m_current_attacking_player = 0; }
+	
+	public abstract ATTAQUE_STATUS playerAttack();
 }
