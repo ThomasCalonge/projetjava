@@ -6,7 +6,7 @@ public class Bateau
 	public ORIENTATION o;
 	public Position pos;
 
-	private int m_damage;
+	private int m_damages;
 	private int m_totalDamages;
 	
 	public enum TYPE
@@ -53,23 +53,23 @@ public class Bateau
 		this.type = type;
 		this.o    = o;
 		this.pos  = p;
-		m_damage = 0;
+		m_damages = 0;
 		m_totalDamages = 0;
 	}
 
 	public boolean setDamage (final int damage_pos)
 	{
-		final int oldDamages = m_damage;
-		m_damage |= (1 << damage_pos);
+		final int oldDamages = m_damages;
+		m_damages |= (1 << damage_pos);
 		
-		if (m_damage != oldDamages)
+		if (m_damages != oldDamages)
 			++m_totalDamages;
 		
-		return m_damage != oldDamages;
+		return m_damages != oldDamages;
 	}
 
 	public boolean getDamage (final int damage_pos)
-	{ return ((m_damage & (1 << damage_pos)) >> damage_pos) == 1; }
+	{ return ((m_damages & (1 << damage_pos)) >> damage_pos) == 1; }
 	
 	public boolean isDestroyed ()
 	{ return m_totalDamages >= TYPE.toInt(type); }

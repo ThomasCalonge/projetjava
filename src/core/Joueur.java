@@ -20,7 +20,7 @@ public class Joueur
 		m_boats.add(b);
 	}
 	
-	public ATTAQUE_STATUS isAttacked(final Position pos)
+	public ATTAQUE_STATUS getAttacked(final Position pos)
 	{
 		ATTAQUE_STATUS ret = ATTAQUE_STATUS.EAU;
 		
