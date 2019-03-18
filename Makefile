@@ -1,11 +1,10 @@
-JAVASRC = $(wildcard src/*.java)
-JAVAOBJ = $(JAVASRC:.java=.class)
-
-all:
-	javac -d bin/ src/*.java
+core:
+	javac -d bin src/core/*.java
 
 run:
 	$(MAKE) -C bin $^
 
+
 clean:
-	rm src/*.class
+	rm bin/*.class
+	rm bin/core/*.class
