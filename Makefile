@@ -2,8 +2,7 @@ core:
 	javac -d bin src/core/*.java
 
 run:
-	$(MAKE) -C bin $^
-
+	@cd bin; java BatailleNavale
 
 clean:
 	rm bin/*.class
