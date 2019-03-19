@@ -1,0 +1,18 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "CodeLens (Launch) - BatailleNavale",
+			"request": "launch",
+			"mainClass": "BatailleNavale",
+			"projectName": "projetJava"
+		},
+		{
+			"type": "java",
+			"name": "CodeLens (Launch) - Main",
+			"request": "launch",
+			"mainClass": "Main",
+			"projectName": "projetjava_5670036d"
+		}
+	]
+}
