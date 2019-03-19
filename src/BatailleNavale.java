@@ -6,6 +6,9 @@ import core.*;
  * Classe qui blablabla et
  * blablabla et bliblanlu et
  * bloblobloblan. 
+ * 
+ * 
+ * 
  * <p>De plus,  
  * blabliblablu
  * 
