@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 import core.*;
 
+import gui.*;
+
 /**
  * Classe qui blablabla et
  * blablabla et bliblanlu et
@@ -13,6 +15,7 @@ import core.*;
  */
 public class BatailleNavale 
 {
+		Start = StartScreen()
 		private static ArrayList<Bateau> m_boats;
 		public static void main(String[] args) 
 		{
