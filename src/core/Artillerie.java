@@ -8,9 +8,15 @@ public class Artillerie extends Bataille {
 	}
 
 	@Override
-	public ATTAQUE_STATUS playerAttack() {
+	public ATTAQUE_STATUS playerAttack(final Position pos) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean player_can_attack(PLAYER_N p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
