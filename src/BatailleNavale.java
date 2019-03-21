@@ -4,8 +4,6 @@ import java.util.Scanner;
 import core.*;
 import core.Bataille.PLAYER_N;
 
-import gui.*;
-
 /**
  * Classe qui blablabla et
  * blablabla et bliblanlu et
