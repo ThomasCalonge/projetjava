@@ -15,8 +15,6 @@ import core.Bataille.PLAYER_N;
  */
 public class BatailleNavale 
 {
-	private static ArrayList<Bateau> m_boats;
-
 	private static Scanner sc;
 
 	public static void main(String[] args) 
@@ -28,11 +26,35 @@ public class BatailleNavale
 
 		Bataille b = bm.create();
 		
-		b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
-		b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
+		//b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
+		//b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
 		
-		add_player_boat(b, PLAYER_N.ONE);
-		add_player_boat(b, PLAYER_N.TWO);
+		//add_player_boat(b, PLAYER_N.ONE);
+		//add_player_boat(b, PLAYER_N.TWO);
+		
+		Joueur p1 = new Joueur("Adrien");
+		Joueur p2 = new Joueur("Thomas");
+		
+		p1.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(1,1)));
+		p1.placeBoat(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.H, new Position(2,3)));
+		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(6,6)));
+		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(4,4)));
+		p1.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
+
+		p2.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.V, new Position(1,1)));
+		p2.placeBoat(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.H, new Position(2,3)));
+		p2.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(6,6)));
+		p2.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(4,4)));
+		p2.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
+		
+		b.addPlayer(PLAYER_N.ONE, p1);
+		b.addPlayer(PLAYER_N.TWO, p2);
+		
+		System.out.println("\n** Grille de " + b.getPlayer(PLAYER_N.ONE).getName() + " **");
+		print(b.getPlayer(PLAYER_N.ONE).getBoatsList());
+
+		System.out.println("\n** Grille de " + b.getPlayer(PLAYER_N.TWO).getName() + "**");
+		print(b.getPlayer(PLAYER_N.TWO).getBoatsList());
 
 		sc.close();
 	}
@@ -51,7 +73,6 @@ public class BatailleNavale
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.CUIRASSE));
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.ZODIAC));
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.ZODIAC));
 	}
 	
@@ -79,8 +100,6 @@ public class BatailleNavale
 		if (choix >= 2)
 			ret = ORIENTATION.H;
 		
-		
-
 		return ret;
 	}
 	
@@ -109,33 +128,35 @@ public class BatailleNavale
 		return choix;
 	}
 	
-	public static void print()
+	public static void print(ArrayList<Bateau> boats)
 	{
+		System.out.println("  A B C D E F G H I J");
 		for(int y = 0; y < 10; ++y)
 		{
+			System.out.print(y + " ");
 			for (int x = 0; x < 10; ++x)
 			{
 				char to_print = '.';
 				
-				for (int i = 0; i < m_boats.size(); ++i)
+				for (Bateau b: boats)
 				{
-					if (m_boats.get(i).o == ORIENTATION.H)
+					if (b.o == ORIENTATION.H)
 					{
-						if (y == m_boats.get(i).pos.y)
+						if (y == b.pos.y)
 						{
-							if ((x >= m_boats.get(i).pos.x) && (x < m_boats.get(i).pos.x + Bateau.TYPE.toInt(m_boats.get(i).type)))
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type)))
 							{
-								to_print = m_boats.get(i).getDamage(x - m_boats.get(i).pos.x) ? 'x' : '-';
+								to_print = b.getDamage(x - b.pos.x) ? 'x' : '-';
 							}
 						}
 					}
 					else
 					{
-						if (x == m_boats.get(i).pos.x)
+						if (x == b.pos.x)
 						{
-							if ((y >= m_boats.get(i).pos.y) && (y < m_boats.get(i).pos.y + Bateau.TYPE.toInt(m_boats.get(i).type)))
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type)))
 							{
-								to_print = m_boats.get(i).getDamage(y - m_boats.get(i).pos.y) ? 'x' : '|';
+								to_print = b.getDamage(y - b.pos.y) ? 'x' : '|';
 							}
 						}
 					}
