@@ -7,5 +7,5 @@ import gui.*;
 import core.*;
 
 public class Controller {
-
+	
 }

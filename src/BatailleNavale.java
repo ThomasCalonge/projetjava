@@ -8,6 +8,6 @@ public class BatailleNavale
 {
 		public static void main(String[] args)
 		{
-			StartScreen viewStart = new StartScreen();
+			EndScreen viewStart = new EndScreen(false);
 		}
 }
