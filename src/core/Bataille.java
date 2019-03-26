@@ -3,7 +3,8 @@ package core;
 public abstract class Bataille
 {
 	protected Joueur[] m_players;
-	protected int m_current_attacking_player;
+	protected PLAYER_N m_current_attacking_player;
+	protected ATTAQUE_STATUS[] m_last_attack_status;
 	
 	public enum TYPE
 	{
@@ -40,6 +41,16 @@ public abstract class Bataille
 			}
 			return ret;
 		}
+
+		public static PLAYER_N fromInt(final int n)
+		{
+			PLAYER_N ret = ONE;
+
+			if (n == 1)
+				ret = TWO;
+			
+			return ret;
+		}
 		
 		public static String toString (final PLAYER_N p)
 		{
@@ -50,6 +61,9 @@ public abstract class Bataille
 			case TWO:
 				ret = "2";
 				break;
+
+			default:
+				break;
 			}
 			
 			return ret;
@@ -59,9 +73,9 @@ public abstract class Bataille
 	public Bataille(final MODE mode)
 	{
 		m_players = new Joueur[2];
+		m_current_attacking_player = PLAYER_N.ONE;
+		m_last_attack_status = new ATTAQUE_STATUS[2];
 	}
-	
-	public void initFirstAttackingPlayer() { m_current_attacking_player = 0; }
 	
 	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ m_players[PLAYER_N.toInt(n)] = p; }
@@ -87,10 +101,13 @@ public abstract class Bataille
 	{
 		m_players[PLAYER_N.toInt(p)].placeBoat(b);
 	}
+
+	public PLAYER_N getCurrentAttackingPlayer() { return m_current_attacking_player; }
+	public void switchAttackingPlayer(){ m_current_attacking_player = PLAYER_N.fromInt((PLAYER_N.toInt(m_current_attacking_player) + 1) % 2); }
+	public abstract boolean player_can_attack(final PLAYER_N p);
 	
 	/**
 	 * Function abstraite appelé lorsque le joueur devant attquer attaque l'autre joueur
 	 */
 	public abstract ATTAQUE_STATUS playerAttack(final Position pos);
-	public abstract boolean player_can_attack(final PLAYER_N p);
 }

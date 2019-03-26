@@ -26,12 +26,6 @@ public class BatailleNavale
 
 		Bataille b = bm.create();
 		
-		//b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
-		//b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
-		
-		//add_player_boat(b, PLAYER_N.ONE);
-		//add_player_boat(b, PLAYER_N.TWO);
-		
 		Joueur p1 = new Joueur("Adrien");
 		Joueur p2 = new Joueur("Thomas");
 		
@@ -49,14 +43,46 @@ public class BatailleNavale
 		
 		b.addPlayer(PLAYER_N.ONE, p1);
 		b.addPlayer(PLAYER_N.TWO, p2);
-		
-		System.out.println("\n** Grille de " + b.getPlayer(PLAYER_N.ONE).getName() + " **");
-		print(b.getPlayer(PLAYER_N.ONE).getBoatsList());
 
-		System.out.println("\n** Grille de " + b.getPlayer(PLAYER_N.TWO).getName() + "**");
-		print(b.getPlayer(PLAYER_N.TWO).getBoatsList());
+		play(b);
 
 		sc.close();
+	}
+
+	private static void play(Bataille b)
+	{
+		System.out.println(" * LA PARTIE COMMENCE * ");
+
+		while (true)
+		{
+			System.out.println("Le Joueur " + PLAYER_N.toString(b.getCurrentAttackingPlayer()) + " attaque:");
+			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
+			System.out.println();
+			Position attackPos = enterAttackPos();
+	
+			if (b.player_can_attack(b.getCurrentAttackingPlayer()))
+			{
+				final ATTAQUE_STATUS s = b.playerAttack(attackPos);
+				System.out.println(ATTAQUE_STATUS.toString(s));
+
+				if (s == ATTAQUE_STATUS.EAU)
+					b.switchAttackingPlayer();
+			}
+			else
+				b.switchAttackingPlayer();
+		}
+	}
+
+	private static Position enterAttackPos()
+	{
+		System.out.println("Entrer les coordonnée de l'attaque: ");
+		System.out.print("x");
+		final int x = choose_int(0, 9);
+
+		System.out.print("y");
+		final int y = choose_int(0, 9);
+
+		return new Position(x, y);
 	}
 	
 	private static Joueur create_player(final Bataille.PLAYER_N n)
@@ -169,3 +195,5 @@ public class BatailleNavale
 		}
 	}
 }
+
+

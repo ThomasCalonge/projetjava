@@ -6,6 +6,7 @@ public class Joueur
 {
 	private String m_name;
 	private ArrayList<Bateau> m_boats;
+	private int[][];
 
 	public Joueur (final String name)
 	{
