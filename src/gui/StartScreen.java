@@ -69,4 +69,5 @@ public JComboBox<?> getDifficulte() {
 public JComboBox<?> geType() {
 	return Type;
 }
+
 }
