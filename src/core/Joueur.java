@@ -12,6 +12,8 @@ public class Joueur
 		m_name = new String(name);
 		m_boats = new ArrayList<Bateau>();
 	}
+	
+	public ArrayList<Bateau> getBoatsList() { return m_boats; }
 
 	public String getName() { return m_name; }
 
