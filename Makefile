@@ -14,7 +14,7 @@ gui:
 	javac -classpath bin -sourcepath src -d bin src/gui/*.java
 
 run:
-	@cd bin; java BatailleNavale
+	@cd bin; java Game
 
 clean:
 	rm bin/*.class

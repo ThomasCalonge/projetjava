@@ -103,20 +103,20 @@ public abstract class Bataille
 	public abstract boolean player_can_attack(final PLAYER_N p);
 	public boolean canContinue() 
 	{
-		boolean ret = false;
+		return (!playerWins(0)) && (!playerWins(1));
+	}
 
-		for (int i = 0; i < 2; ++i)
+	private boolean playerWins(final int p)
+	{
+		boolean ret = true;
+		for (Bateau b: m_players[p].getBoatsList())
 		{
-			for (Bateau b: m_players[i].getBoatsList())
+			if (!b.isDestroyed())
 			{
-				if (!b.isDestroyed())
-				{
-					ret = true;
-					break;
-				}
+				ret = false;
+				break;
 			}
 		}
-
 		return ret;
 	}
 	

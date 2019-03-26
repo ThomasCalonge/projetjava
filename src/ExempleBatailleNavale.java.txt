@@ -22,23 +22,15 @@ public class BatailleNavale
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
 		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
-		bm.setType(Bataille.TYPE.ARTILLERIE);
-		
+		bm.setType(Bataille.TYPE.NAVALE);
+
 		Bataille b = bm.create();
 		
 		Joueur p1 = new Joueur("Adrien");
 		Joueur p2 = new Joueur("Thomas");
 		
-		p1.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(1,1)));
-		p1.placeBoat(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.H, new Position(2,3)));
-		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(6,6)));
-		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(4,4)));
 		p1.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
 
-		p2.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.V, new Position(1,1)));
-		p2.placeBoat(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.H, new Position(2,3)));
-		p2.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(6,6)));
-		p2.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(4,4)));
 		p2.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
 		
 		b.addPlayer(PLAYER_N.ONE, p1);
@@ -74,6 +66,8 @@ public class BatailleNavale
 			else
 				b.switchAttackingPlayer();
 		}
+
+		System.out.println(" * Gagné *");
 	}
 
 	private static Position enterAttackPos()
