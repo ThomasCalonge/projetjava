@@ -80,7 +80,7 @@ public class Radar extends Bataille {
             }    
 		}
 		
-		// FOR THE GAYEST PROGRAMMER ONLY
+		// POUR TOI THOMAS, TU DOIS L'INTEGRER A L'INTERFACE GRAPH
 		System.out.print("Il y a un navire ennemi dans les "+count+" cases alentour.");
 		//ATTENTION ! Thomas, quand tu feras l'affichage graphique, c'est ici que ça se passe.
     }
