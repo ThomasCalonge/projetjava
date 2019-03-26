@@ -101,7 +101,24 @@ public abstract class Bataille
 	public PLAYER_N getCurrentAttackingPlayer() { return m_current_attacking_player; }
 	public void switchAttackingPlayer(){ m_current_attacking_player = PLAYER_N.fromInt((PLAYER_N.toInt(m_current_attacking_player) + 1) % 2); }
 	public abstract boolean player_can_attack(final PLAYER_N p);
-	public boolean canContinue() { return true; }
+	public boolean canContinue() 
+	{
+		boolean ret = false;
+
+		for (int i = 0; i < 2; ++i)
+		{
+			for (Bateau b: m_players[i].getBoatsList())
+			{
+				if (!b.isDestroyed())
+				{
+					ret = true;
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
 	
 	/**
 	 * Function abstraite appelé lorsque le joueur devant attquer attaque l'autre joueur

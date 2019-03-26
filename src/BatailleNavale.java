@@ -23,7 +23,7 @@ public class BatailleNavale
 		BatailleManager bm = new BatailleManager();
 		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
 		bm.setType(Bataille.TYPE.ARTILLERIE);
-
+		
 		Bataille b = bm.create();
 		
 		Joueur p1 = new Joueur("Adrien");
