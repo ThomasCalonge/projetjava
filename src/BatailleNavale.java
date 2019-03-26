@@ -4,21 +4,12 @@ import core.*;
 
 import gui.*;
 
-/**
- * Classe qui blablabla et
- * blablabla et bliblanlu et
- * bloblobloblan. 
- * <p>De plus,  
- * blabliblablu
- * 
- * @author Adrien COURNAND
- */
 public class BatailleNavale 
 {
-		Start = StartScreen()
 		private static ArrayList<Bateau> m_boats;
-		public static void main(String[] args) 
+		public static void main(String[] args)
 		{
+			StartScreen viewStart = new StartScreen();
 			m_boats = new ArrayList<Bateau>();
 			m_boats.add(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(3,3)));
 			m_boats.add(new Bateau(Bateau.TYPE.SOUS_MARIN, ORIENTATION.V, new Position(1,1)));
