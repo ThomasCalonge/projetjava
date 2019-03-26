@@ -1,24 +1,30 @@
-fonction radar_reponse(player, ATTAQUE_STATUS, pos.x, pos.y) {
+package core;
+
+public class Radar extends Radar {
+
+    public radar_reponse(final Position pos) {
 
 //Il faut l'attaque status et la position lors de l'attaque en argument
 //Par exemple lorsque l'on tire, et que l'on est en radar si on touche l'eau ça appelle cette fonction
 
-int count = 1;
-int pos_i = pos.x;
-int pos_j = pos.y;
-int boolean found = false;
+        int count = 1;
+        int pos_i = pos.x;
+        int pos_j = pos.y;
+        int boolean found = false;
 
-while (found ! = True) {
-    for (int m = pos_i - count ; m <= pos_i + 1 ; m++){
-        for (int n = pos_j - count ; n <= pos_j ; n++){
-            if pos_i et pos_j == position de collision de bateau 
-                then found == true
+        while (found ! = True) {
+            for (int m = pos_i - count ; m <= pos_i + 1 ; m++){
+                for (int n = pos_j - count ; n <= pos_j ; n++){
+                    if pos_i et pos_j == final Position pos
+                        found == true ;
+                    }
+                }
+                count ++ // On a pas trouvé dans cette aire de recherche donc on l'augmente.
+            }   
+            System.out.print("Il y a un navire ennemi dans les "+count+" cases alentour");
+                return count;
         }
     }
-    count ++ // On a pas trouvé dans cette aire de recherche donc on l'augmente.
 }
 
-return count;
-}
 
-On appelle radar_reponse(currentplayer, ATTAQUE_STATUS, pos.x, pos.y)) pour l'attaque de playerAttack.m_current_attacking_player
