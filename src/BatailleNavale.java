@@ -22,7 +22,7 @@ public class BatailleNavale
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
 		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
-		bm.setType(Bataille.TYPE.NAVALE);
+		bm.setType(Bataille.TYPE.ARTILLERIE);
 
 		Bataille b = bm.create();
 		
@@ -53,11 +53,14 @@ public class BatailleNavale
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
 
-		while (true)
+		while (b.canContinue())
 		{
+			System.out.println("*-------------------------------*");
+			System.out.println("*-------------------------------*");
 			System.out.println("Le Joueur " + PLAYER_N.toString(b.getCurrentAttackingPlayer()) + " attaque:");
 			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
-			System.out.println();
+			System.out.println("*-------------------------------*");
+			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
 			Position attackPos = enterAttackPos();
 	
 			if (b.player_can_attack(b.getCurrentAttackingPlayer()))
@@ -194,6 +197,36 @@ public class BatailleNavale
 			System.out.print("\n");
 		}
 	}
+
+	static void printAttaqueData(final ArrayList<AttaqueData> datas)
+	{
+		System.out.println("  A B C D E F G H I J");
+		for (int y = 0; y < 10; ++y)
+		{
+			System.out.print(y + " ");
+			for (int x = 0; x < 10; ++x)
+			{
+				char to_print = '.';
+				for (AttaqueData d: datas)
+				{
+					if ((d.pos.x == x) && (d.pos.y == y))
+					{
+						switch(d.status)
+						{
+							case EAU:
+								to_print = 'E';
+								break;
+							case TOUCHE:
+							case COULE:
+								to_print = 'x';
+								break;
+						}
+					}
+				}
+
+				System.out.print(to_print + " ");
+			}
+			System.out.println();
+		}
+	}
 }
-
-

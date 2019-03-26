@@ -13,6 +13,7 @@ public class BatailleNavale extends Bataille
 	public ATTAQUE_STATUS playerAttack(final Position pos) 
 	{
 		final ATTAQUE_STATUS s = (m_current_attacking_player == PLAYER_N.ONE) ? player_one_attacke_player_two(pos) : player_two_attacke_player_one(pos);
+		m_players[PLAYER_N.toInt(m_current_attacking_player)].pushAttaqueData(new AttaqueData(pos, s));
 		m_last_attack_status[PLAYER_N.toInt(m_current_attacking_player)] = s;
 		return s;
 	}

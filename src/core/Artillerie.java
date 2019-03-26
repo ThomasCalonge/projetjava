@@ -9,7 +9,7 @@ public class Artillerie extends Bataille {
 
 	@Override
 	public ATTAQUE_STATUS playerAttack(final Position pos) {
-		// TODO Auto-generated method stub
+		System.out.println("Artillerie");
 		return null;
 	}
 

@@ -97,17 +97,14 @@ public abstract class Bataille
 		return ret;
 	}
 	
-	public void placePlayerBoat(final PLAYER_N p, final Bateau b)
-	{
-		m_players[PLAYER_N.toInt(p)].placeBoat(b);
-	}
-
+	public void placePlayerBoat(final PLAYER_N p, final Bateau b) { m_players[PLAYER_N.toInt(p)].placeBoat(b); }
 	public PLAYER_N getCurrentAttackingPlayer() { return m_current_attacking_player; }
 	public void switchAttackingPlayer(){ m_current_attacking_player = PLAYER_N.fromInt((PLAYER_N.toInt(m_current_attacking_player) + 1) % 2); }
 	public abstract boolean player_can_attack(final PLAYER_N p);
+	public boolean canContinue() { return true; }
 	
 	/**
 	 * Function abstraite appelé lorsque le joueur devant attquer attaque l'autre joueur
 	 */
-	public abstract ATTAQUE_STATUS playerAttack(final Position pos);
+	public abstract ATTAQUE_STATUS playerAttack(final Position pos);	
 }
