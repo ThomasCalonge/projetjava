@@ -1,8 +1,0 @@
-package core;
-
-public class Radar_reponse extends Radar {
-
-   
-}
-
-
