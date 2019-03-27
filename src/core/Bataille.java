@@ -121,9 +121,7 @@ public abstract class Bataille
 		}
 		return ret;
 	}
-	/**
-	 * Function abstraite appelé lorsque le joueur devant attquer attaque l'autre joueur
-	 */
+	
 	public ATTAQUE_STATUS playerAttack(final Position pos) 
 	{
 		final ATTAQUE_STATUS s = (m_current_attacking_player == PLAYER_N.ONE) ? player_one_attacke_player_two(pos) : player_two_attacke_player_one(pos);
