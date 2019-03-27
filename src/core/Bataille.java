@@ -5,6 +5,7 @@ public abstract class Bataille
 	protected Joueur[] m_players;
 	protected PLAYER_N m_current_attacking_player;
 	protected ATTAQUE_STATUS[] m_last_attack_status;
+
 	
 	public enum TYPE
 	{
@@ -119,7 +120,6 @@ public abstract class Bataille
 		}
 		return ret;
 	}
-	
 	/**
 	 * Function abstraite appelé lorsque le joueur devant attquer attaque l'autre joueur
 	 */

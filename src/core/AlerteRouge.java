@@ -18,5 +18,4 @@ public class AlerteRouge extends Bataille {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }
