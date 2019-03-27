@@ -16,7 +16,7 @@ public class Radar extends Bataille {
 	}
 
 	@Override
-	public boolean player_can_attack(PLAYER_N p) {
+	public boolean attacking_player_can_reattack() {
 		// TODO Auto-generated method stub
 		return false;
 	}
