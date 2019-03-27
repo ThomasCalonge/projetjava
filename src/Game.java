@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import core.*;
@@ -29,7 +30,7 @@ public class Game
 		Joueur p1 = new Joueur("Adrien");
 		Joueur p2 = new Joueur("Thomas");
 		
-		p1.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
+		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(2,3)));
 
 		p2.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
 		
@@ -54,16 +55,11 @@ public class Game
 			System.out.println("*-------------------------------*");
 			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
 			Position attackPos = enterAttackPos();
+			
+			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
+			System.out.println(ATTAQUE_STATUS.toString(s));
 	
-			if (b.player_can_attack(b.getCurrentAttackingPlayer()))
-			{
-				final ATTAQUE_STATUS s = b.playerAttack(attackPos);
-				System.out.println(ATTAQUE_STATUS.toString(s));
-
-				if (s == ATTAQUE_STATUS.EAU)
-					b.switchAttackingPlayer();
-			}
-			else
+			if (!b.attacking_player_can_reattack())
 				b.switchAttackingPlayer();
 		}
 
@@ -192,7 +188,7 @@ public class Game
 		}
 	}
 
-	static void printAttaqueData(final ArrayList<AttaqueData> datas)
+	static void printAttaqueData(final ArrayList<AttackData> datas)
 	{
 		System.out.println("  A B C D E F G H I J");
 		for (int y = 0; y < 10; ++y)
@@ -201,7 +197,7 @@ public class Game
 			for (int x = 0; x < 10; ++x)
 			{
 				char to_print = '.';
-				for (AttaqueData d: datas)
+				for (AttackData d: datas)
 				{
 					if ((d.pos.x == x) && (d.pos.y == y))
 					{
