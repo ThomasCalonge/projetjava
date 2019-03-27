@@ -39,6 +39,32 @@ public class Bateau
 	        }
 	        return ret;
 	    }
+		
+		public static String toString (final TYPE t)
+		{
+			String ret = "";
+			
+			switch(t)
+			{
+			case PORTE_AVION:
+				ret = "Porte-avion";
+				break;
+				
+			case CUIRASSE:
+				ret = "Cuirassé";
+				break;
+				
+			case SOUS_MARIN:
+				ret = "Sous-marin";
+				break;
+				
+			case ZODIAC:
+				ret = "Zodiac";
+				break;
+			}
+			
+			return ret;
+		}
 	}
 
 	/**
