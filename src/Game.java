@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import core.*;
-import core.Bataille.PLAYER_N;
+import core.BatailleNavale.PLAYER_N;
 
 /**
  * Classe qui blablabla et
@@ -22,10 +22,10 @@ public class Game
 	{
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
-		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
-		bm.setType(Bataille.TYPE.NAVALE);
+		bm.setMode(BatailleNavale.MODE.DEUX_JOUEURS);
+		bm.setType(BatailleNavale.TYPE.NAVALE);
 
-		Bataille b = bm.create();
+		BatailleNavale b = bm.create();
 		
 		Joueur p1 = new Joueur("Adrien");
 		Joueur p2 = new Joueur("Thomas");
@@ -42,7 +42,7 @@ public class Game
 		sc.close();
 	}
 
-	private static void play(Bataille b)
+	private static void play(BatailleNavale b)
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
 
@@ -78,14 +78,14 @@ public class Game
 		return new Position(x, y);
 	}
 	
-	private static Joueur create_player(final Bataille.PLAYER_N n)
+	private static Joueur create_player(final BatailleNavale.PLAYER_N n)
 	{
 		System.out.print("nom (Joueur " + PLAYER_N.toString(n) + ") : ");
 		
 		return new Joueur(sc.nextLine());
 	}
 	
-	private static void add_player_boat(Bataille b, final PLAYER_N n)
+	private static void add_player_boat(BatailleNavale b, final PLAYER_N n)
 	{
 		System.out.println("Le joueur " + b.getPlayer(n).getName() + " place ses bateaux");
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.PORTE_AVION));

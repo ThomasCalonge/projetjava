@@ -2,23 +2,11 @@ package core;
 
 import java.util.ArrayList;
 
-public class Radar extends Bataille {
+public class Radar extends BatailleNavale {
 
 	public Radar(final MODE mode) {
 		super(mode);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public ATTAQUE_STATUS playerAttack(final Position pos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean attacking_player_can_reattack() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 	public void radar_reponse(final Position pos, ArrayList<Bateau> bateau_ennemi) {
