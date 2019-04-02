@@ -25,38 +25,42 @@ public class StartScreen extends JFrame {
 	JLabel imageintro = new JLabel(new ImageIcon("images/bateau.png"), JLabel.CENTER);
 	private JButton boutonfinal = new JButton("COMMENCER UNE PARTIE");
 	
-public StartScreen(){
-    setTitle("Bataille Navale");
-    setSize(400, 500);
-    setLocationRelativeTo(null);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setResizable(false);
-    conteneur.setLayout(new GridLayout(1, 1, 0, 0));
-    JPanel contenu = new JPanel();
-    Mode.setPreferredSize(new Dimension(150, 20));
-	Difficulte.setPreferredSize(new Dimension(150, 20));
-	gap0.setPreferredSize(new Dimension(400, 15));
-	gap1.setPreferredSize(new Dimension(400, 30));
-	gap2.setPreferredSize(new Dimension(400, 30));
-	gap3.setPreferredSize(new Dimension(400, 50));
-	imageintro.setPreferredSize(new Dimension(280, 180));
-	contenu.setBackground(Color.white);
-	contenu.add(imageintro);
-	contenu.add(gap0);
-	contenu.add(nomMode);
-	contenu.add(Mode);
-	contenu.add(gap1);
-	contenu.add(nomDifficulte);
-	contenu.add(Difficulte);
-	contenu.add(gap2);
-	contenu.add(nomType);
-	contenu.add(Type);
-	contenu.add(gap3);;
-	contenu.add(boutonfinal);
-	conteneur.add(contenu);
-	setContentPane(conteneur);
-	setVisible(true);
-  }
+	public StartScreen() {
+		this.refreshScreen();
+	}
+	
+	public void refreshScreen() {
+		setTitle("Bataille Navale");
+	    setSize(400, 500);
+	    setLocationRelativeTo(null);
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setResizable(false);
+	    conteneur.setLayout(new GridLayout(1, 1, 0, 0));
+	    JPanel contenu = new JPanel();
+	    Mode.setPreferredSize(new Dimension(150, 20));
+		Difficulte.setPreferredSize(new Dimension(150, 20));
+		gap0.setPreferredSize(new Dimension(400, 15));
+		gap1.setPreferredSize(new Dimension(400, 30));
+		gap2.setPreferredSize(new Dimension(400, 30));
+		gap3.setPreferredSize(new Dimension(400, 50));
+		imageintro.setPreferredSize(new Dimension(280, 180));
+		contenu.setBackground(Color.white);
+		contenu.add(imageintro);
+		contenu.add(gap0);
+		contenu.add(nomMode);
+		contenu.add(Mode);
+		contenu.add(gap1);
+		contenu.add(nomDifficulte);
+		contenu.add(Difficulte);
+		contenu.add(gap2);
+		contenu.add(nomType);
+		contenu.add(Type);
+		contenu.add(gap3);;
+		contenu.add(boutonfinal);
+		conteneur.add(contenu);
+		setContentPane(conteneur);
+		setVisible(true);
+	}
 
 public JComboBox<?> getMode() {
 	return Mode;
@@ -68,6 +72,10 @@ public JComboBox<?> getDifficulte() {
 
 public JComboBox<?> geType() {
 	return Type;
+}
+
+public JButton getBoutonfinal() {
+	return boutonfinal;
 }
 
 }
