@@ -1,9 +1,10 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 import core.*;
-import core.BatailleNavale.PLAYER_N;
+import core.Bataille.PLAYER_N;
 
 /**
  * Classe qui blablabla et
@@ -17,32 +18,38 @@ import core.BatailleNavale.PLAYER_N;
 public class Game 
 {
 	private static Scanner sc;
-
+	private static boolean cont = true;
 	public static void main(String[] args) 
 	{
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
-		bm.setMode(BatailleNavale.MODE.DEUX_JOUEURS);
-		bm.setType(BatailleNavale.TYPE.NAVALE);
+		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
+		bm.setType(Bataille.TYPE.NAVALE);
+		Bataille b = bm.create();
+		
+		Joueur p1 = create_player(PLAYER_N.ONE);
+		Joueur p2 = create_player(PLAYER_N.TWO);
 
-		BatailleNavale b = bm.create();
-		
-		Joueur p1 = new HumanCmdPlayer("Adrien", sc);
-		Joueur p2 = new HumanCmdPlayer("Thomas", sc);
-		
-		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(2,3)));
-
-		p2.placeBoat(new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(9,9)));
-		
 		b.addPlayer(PLAYER_N.ONE, p1);
 		b.addPlayer(PLAYER_N.TWO, p2);
 
-		play(b);
+		add_player_boat(b, PLAYER_N.ONE);
+		add_player_boat(b, PLAYER_N.TWO);
+		
+		b.addPlayer(PLAYER_N.ONE, p1);
+		b.addPlayer(PLAYER_N.TWO, p2);
+		
+		try {
+			play(b);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		sc.close();
 	}
 
-	private static void play(BatailleNavale b)
+	private static void play(Bataille b) throws Exception
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
 
@@ -60,7 +67,32 @@ public class Game
 			System.out.println(ATTAQUE_STATUS.toString(s));
 	
 			if (!b.attacking_player_can_reattack())
+			{
+				if (b.getType() == Bataille.TYPE.RADAR)
+				{
+					System.out.println("Bateau le plus proche: " + ((Radar)b).radar_reponse(attackPos));
+					System.in.read();
+				}
+
 				b.switchAttackingPlayer();
+
+				System.out.println("Appuyer pour passer au Joueur suivant");
+				System.in.read();
+	
+				int i = 3;
+	
+				System.out.println("Changement de Joueur dans:");
+				while (i > 0)
+				{
+					System.out.println(i--);
+					Thread.sleep(1000);
+				}
+	
+				for (int j = 0; j < 100; ++j)
+				{
+					System.out.println();
+				}
+			}
 		}
 
 		System.out.println(" * Gagné *");
@@ -78,21 +110,42 @@ public class Game
 		return new Position(x, y);
 	}
 	
-	private static Joueur create_player(final BatailleNavale.PLAYER_N n)
+	private static Joueur create_player(final Bataille.PLAYER_N n)
 	{
 		System.out.print("nom (Joueur " + PLAYER_N.toString(n) + ") : ");
 		
 		return new HumanCmdPlayer(sc.nextLine(), sc);
 	}
 	
-	private static void add_player_boat(BatailleNavale b, final PLAYER_N n)
+	private static void add_player_boat(Bataille b, final PLAYER_N n)
 	{
-		System.out.println("Le joueur " + b.getPlayer(n).getName() + " place ses bateaux");
+		System.out.println(b.getPlayer(n).getName() + " place ses bateaux");
+
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.PORTE_AVION));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
+		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.CUIRASSE));
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
+		b.placePlayerBoat(n, create_boat(Bateau.TYPE.CUIRASSE));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
 		b.placePlayerBoat(n, create_boat(Bateau.TYPE.ZODIAC));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+
+		for (int i = 0; i < 100; ++i)
+		{ System.out.println("*"); }
 	}
 	
 	private static Bateau create_boat(final Bateau.TYPE t)
@@ -220,3 +273,6 @@ public class Game
 		}
 	}
 }
+
+
+//Thread t = new Thread(){ public void run(){ }};

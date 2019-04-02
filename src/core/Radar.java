@@ -2,23 +2,24 @@ package core;
 
 import java.util.ArrayList;
 
-public class Radar extends BatailleNavale {
+public class Radar extends Bataille {
 
 	public Radar(final MODE mode) {
 		super(mode);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public int radar_reponse(final Position pos, ArrayList<Bateau> bateau_ennemi) {
 
+	public int radar_reponse(final Position pos) {
+
+		ArrayList<Bateau> bateau_ennemi = m_players[(PLAYER_N.toInt(getCurrentAttackingPlayer()) + 1) % 2].getBoatsList();
 		// Il faut l'attaque status et la position lors de l'attaque en argument
 		// Par exemple lorsque l'on tire, et que l'on est en radar si on touche l'eau ça
 		// appelle cette fonction
 
-		int pivot_deb_x = pos.x;
-		int pivot_fin_x = pos.x;
-		int pivot_deb_y = pos.y;
-		int pivot_fin_y = pos.y;
+		int pivot_deb_x = Math.max(pos.x - 1, 0);
+		int pivot_fin_x = Math.min(pos.x + 1, 9);
+		int pivot_deb_y = Math.max(pos.y - 1, 0);
+		int pivot_fin_y = Math.min(pos.y + 1, 9);
 		boolean found = false;
 		boolean recherche = true;
 		int count = 0;
@@ -46,31 +47,40 @@ public class Radar extends BatailleNavale {
 			}
 		}
 
-		while (found != true) {
-			while (recherche) {
-				for (int i = pivot_deb_x; i <= pivot_fin_x; i++) {
-					for (int j = pivot_deb_y; j <= pivot_fin_y; j++) {
-						if (matrice[i][j] == 1)
-							found = true;
+		while (found != true) 
+		{
+			count++;
+			for (int j = pivot_deb_y; j <= pivot_fin_y; j++) 
+			{
+				for (int i = pivot_deb_x; i <= pivot_fin_x; i++) 
+				{
+					if (matrice[i][j] == 1)
+					{
+						found = true;
+						break;
 					}
-					if (pivot_deb_y > 0)
-						pivot_deb_y--;
-					if (pivot_fin_y < 10)
-						pivot_fin_y++;
 				}
-				if (pivot_deb_x == 0 && pivot_deb_y == 0 && pivot_fin_x == 0 && pivot_fin_y == 0)
-					recherche = false;
-
-				if (pivot_deb_x > 0)
-					pivot_deb_x--;
-				if (pivot_fin_x < 10)
-					pivot_fin_x++;
-
-				count++;
-
+				
+				if (found)
+					break;
 			}
+
+			if (pivot_deb_x > 0)
+				pivot_deb_x--;
+			if (pivot_fin_x < 9)
+				pivot_fin_x++;
+
+			if (pivot_deb_y > 0)
+				pivot_deb_y--;
+			if (pivot_fin_y < 9)
+				pivot_fin_y++;
 		}
 
 		return count;
+	}
+
+	@Override
+	public TYPE getType() {
+		return TYPE.RADAR;
 	}
 }

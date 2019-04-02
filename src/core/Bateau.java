@@ -85,13 +85,21 @@ public class Bateau
 
 	public boolean setDamage (final int damage_pos)
 	{
-		final int oldDamages = m_damages;
-		m_damages |= (1 << damage_pos);
-		
-		if (m_damages != oldDamages)
-			++m_totalDamages;
-		
-		return m_damages != oldDamages;
+		if (damage_pos < TYPE.toInt(type))
+		{
+			final int oldDamages = m_damages;
+			
+			m_damages |= (1 << damage_pos);
+			
+			// Si m_damage n'est pas différent de sa valeur avant modification
+			// C'est que l'on a attaqué une partie déjà touché
+			// Sinon le nombre total de domages est augmenté
+			if (m_damages != oldDamages)
+				++m_totalDamages;
+			
+			return m_damages != oldDamages;
+		}
+		return false;
 	}
 
 	public boolean getDamage (final int damage_pos)
