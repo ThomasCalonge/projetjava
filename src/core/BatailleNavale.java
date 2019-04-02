@@ -22,6 +22,13 @@ public class BatailleNavale
 		UN_JOUEUR,
 		DEUX_JOUEURS;
 	}
+	
+	public enum DIFFICULTE
+	{
+		FACILE,
+		MOYEN,
+		DIFFICILE;
+	}
 
 	public enum PLAYER_N
 	{
@@ -174,4 +181,6 @@ public class BatailleNavale
 	{
 		return m_players[0].getAttacked(pos);
 	}
+	
+	
 }

@@ -1,25 +1,23 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.Scanner;
 
+import controller.Controller;
 import core.*;
-import core.BatailleNavale.PLAYER_N;
+import gui.*;
 
-/**
- * Classe qui blablabla et
- * blablabla et bliblanlu et
- * bloblobloblan. 
- * <p>De plus,  
- * blabliblablu
- * 
- * @author Adrien COURNAND
- */
 public class Game 
 {
-	private static Scanner sc;
+	
+	//private static Scanner sc;
 
 	public static void main(String[] args) 
 	{
+		
+		BatailleManager game = new BatailleManager();
+		StartScreen viewStart = new StartScreen();
+		Controller controller = new Controller(game, viewStart);
+		controller.control();
+		/*
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
 		bm.setMode(BatailleNavale.MODE.DEUX_JOUEURS);
@@ -39,9 +37,9 @@ public class Game
 
 		play(b);
 
-		sc.close();
+		sc.close();*/
 	}
-
+	/*
 	private static void play(BatailleNavale b)
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
@@ -218,5 +216,5 @@ public class Game
 			}
 			System.out.println();
 		}
-	}
+	}*/
 }
