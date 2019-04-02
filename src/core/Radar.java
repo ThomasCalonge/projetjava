@@ -9,7 +9,7 @@ public class Radar extends BatailleNavale {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void radar_reponse(final Position pos, ArrayList<Bateau> bateau_ennemi) {
+	public int radar_reponse(final Position pos, ArrayList<Bateau> bateau_ennemi) {
 
 		// Il faut l'attaque status et la position lors de l'attaque en argument
 		// Par exemple lorsque l'on tire, et que l'on est en radar si on touche l'eau ça
@@ -71,9 +71,6 @@ public class Radar extends BatailleNavale {
 			}
 		}
 
-		// POUR TOI THOMAS, TU DOIS L'INTEGRER A L'INTERFACE GRAPH
-		System.out.print("Il y a un navire ennemi dans les " + count + " cases alentour.");
-		// ATTENTION ! Thomas, quand tu feras l'affichage graphique, c'est ici que ça se
-		// passe.
+		return count;
 	}
 }
