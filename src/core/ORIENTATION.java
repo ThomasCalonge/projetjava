@@ -1,7 +1,12 @@
 package core;
 
+/**
+ * Permet de stocker une orientation (utiliser pour les Bateaux)
+ */
 public enum ORIENTATION
 {
-	H, //Horizontale
-	V; //Verticale
+	//Horizontale
+	H,
+	//Verticale
+	V;
 }
