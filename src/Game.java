@@ -27,8 +27,8 @@ public class Game
 
 		BatailleNavale b = bm.create();
 		
-		Joueur p1 = new Joueur("Adrien");
-		Joueur p2 = new Joueur("Thomas");
+		Joueur p1 = new HumanCmdPlayer("Adrien", sc);
+		Joueur p2 = new HumanCmdPlayer("Thomas", sc);
 		
 		p1.placeBoat(new Bateau(Bateau.TYPE.CUIRASSE, ORIENTATION.V, new Position(2,3)));
 
@@ -54,7 +54,7 @@ public class Game
 			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
 			System.out.println("*-------------------------------*");
 			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
-			Position attackPos = enterAttackPos();
+			Position attackPos = b.getPlayer(b.getCurrentAttackingPlayer()).getAttackPos(); //enterAttackPos();
 			
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
 			System.out.println(ATTAQUE_STATUS.toString(s));
@@ -82,7 +82,7 @@ public class Game
 	{
 		System.out.print("nom (Joueur " + PLAYER_N.toString(n) + ") : ");
 		
-		return new Joueur(sc.nextLine());
+		return new HumanCmdPlayer(sc.nextLine(), sc);
 	}
 	
 	private static void add_player_boat(BatailleNavale b, final PLAYER_N n)
