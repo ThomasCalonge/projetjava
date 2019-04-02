@@ -8,7 +8,7 @@ public class EndScreen extends JFrame {
 	private static final long serialVersionUID = -7141081697553925112L;
 	private JPanel screen = new JPanel();
 	private JLabel victoire = new JLabel("Victoire !", JLabel.CENTER);
-	private JLabel defaite = new JLabel("Défaite !", JLabel.CENTER);
+	private JLabel defaite = new JLabel("Dï¿½faite !", JLabel.CENTER);
 	private JButton boutonquitter = new JButton("QUITTER");
 	private JLabel gap0 = new JLabel("");
 	private JLabel gap1 = new JLabel("");

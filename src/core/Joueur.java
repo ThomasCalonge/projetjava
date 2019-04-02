@@ -2,16 +2,20 @@ package core;
 
 import java.util.ArrayList;
 
-public class Joueur
+public abstract class Joueur
 {
 	private String m_name;
 	private ArrayList<Bateau> m_boats;
+	private ArrayList<AttackData> m_attaque_data;
 
 	public Joueur (final String name)
 	{
 		m_name = new String(name);
 		m_boats = new ArrayList<Bateau>();
+		m_attaque_data = new ArrayList<AttackData>();
 	}
+	
+	public ArrayList<Bateau> getBoatsList() { return m_boats; }
 
 	public String getName() { return m_name; }
 
@@ -50,6 +54,10 @@ public class Joueur
 		
 		return ret;
 	}
+
+	public void pushAttaqueData (final AttackData data) { m_attaque_data.add(data); }
+	public ArrayList<AttackData> getAttaqueData () { return m_attaque_data; }
+	public abstract Position getAttackPos();
 	
 	private boolean testHCollision (final Bateau b, final Position pos)
 	{
