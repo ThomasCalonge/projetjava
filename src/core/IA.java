@@ -15,4 +15,9 @@ public class IA extends Joueur  {
 		
 	}
 
+	@Override
+	public Position getAttackPos() {
+		return null;
+	}
+
 }

@@ -2,7 +2,7 @@ package core;
 
 import java.util.ArrayList;
 
-public class Joueur
+public abstract class Joueur
 {
 	private String m_name;
 	private ArrayList<Bateau> m_boats;
@@ -57,6 +57,7 @@ public class Joueur
 
 	public void pushAttaqueData (final AttackData data) { m_attaque_data.add(data); }
 	public ArrayList<AttackData> getAttaqueData () { return m_attaque_data; }
+	public abstract Position getAttackPos();
 	
 	private boolean testHCollision (final Bateau b, final Position pos)
 	{
