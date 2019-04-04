@@ -1,10 +1,11 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import core.*;
+import core.Bataille.MODE;
 import core.Bataille.PLAYER_N;
+import core.Bataille.TYPE;
 
 /**
  * Classe qui blablabla et
@@ -18,13 +19,12 @@ import core.Bataille.PLAYER_N;
 public class Game 
 {
 	private static Scanner sc;
-	private static boolean cont = true;
 	public static void main(String[] args) 
 	{
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
-		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
-		bm.setType(Bataille.TYPE.NAVALE);
+		create_bataille(bm);
+		bm.setMode(MODE.DEUX_JOUEURS);
 		Bataille b = bm.create();
 		
 		Joueur p1 = create_player(PLAYER_N.ONE);
@@ -49,6 +49,27 @@ public class Game
 		sc.close();
 	}
 
+	private static void create_bataille(BatailleManager bm)
+	{
+		bm.setType(select_type());
+	}
+
+	private static Bataille.TYPE select_type()
+	{
+		Bataille.TYPE type = TYPE.NAVALE;
+
+		System.out.println("Choisire un type de bataille:");
+		System.out.println("1 - Navale");
+		System.out.println("2 - Radar");
+
+		int choice = choose_int(1,2);
+
+		if (choice == 2)
+			type = TYPE.RADAR;
+
+		return type;
+	}
+
 	private static void play(Bataille b) throws Exception
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
@@ -71,7 +92,6 @@ public class Game
 				if (b.getType() == Bataille.TYPE.RADAR)
 				{
 					System.out.println("Bateau le plus proche: " + ((Radar)b).radar_reponse(attackPos));
-					System.in.read();
 				}
 
 				b.switchAttackingPlayer();
@@ -187,7 +207,7 @@ public class Game
 		
 		return ret;
 	}
-	
+
 	private static int choose_int(final int min, final int max)
 	{
 		int choix = 0;
@@ -196,7 +216,9 @@ public class Game
 		{
 			System.out.print(" > (" + min + ";" + max + ") ");
 			choix = sc.nextInt();
+
 		}while((choix < min) || (choix > max));
+		
 		return choix;
 	}
 	
