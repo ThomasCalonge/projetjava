@@ -303,6 +303,3 @@ public class Game
 		}
 	}
 }
-
-
-//Thread t = new Thread(){ public void run(){ }};
