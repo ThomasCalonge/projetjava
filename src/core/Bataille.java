@@ -141,15 +141,26 @@ public abstract class Bataille
 		return matrice;
 	}
 	
+	public abstract TYPE getType();
+
 	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ m_players[playerToInt(n)] = p; }
 
-	public abstract TYPE getType();
-	
-	public Joueur getPlayer(final PLAYER_N n)
+	/**
+	 * Retourne l'instance d'un joueur. L'instance que cette fonction retourne n'est pas modifiable
+	 * 
+	 * @param n le joueur dont on veut récupérer l'instance
+	 * @return l'instance du joueur non modifiable
+	 */
+	public final Joueur getPlayer(final PLAYER_N n)
 	{ return m_players[playerToInt(n)]; }
 
-	public Joueur getCurrentAttackingPlayer()
+	/**
+	 * Retourne l'instance du joueur qui attaque. Cette instance est non modifiable.
+	 * 
+	 * @return l'instance non modifiable du joueur qui attaque.
+	 */
+	public final Joueur getCurrentAttackingPlayer()
 	{ return m_players[m_current_attacking_player]; }
 	
 	public void placePlayerBoat(final PLAYER_N n, final Bateau b)
@@ -183,19 +194,36 @@ public abstract class Bataille
 		return cond1 && cond2;
 	}
 
+	/**
+	 * Permet de transformer une valeur {@linkplain core.Bataille.PLAYER_N PLAYER_N} en un entier.
+	 * Cet entier pourra être utilisé comme index dans un tableau PLAYER_N.ONE est donc associé a 0, puis ensuite les velurs sont
+	 * incrémentées.
+	 * 
+	 * @param n la valeur de PLAYER_N à transformer en entier
+	 * @return en eniter correspondant à <b>n</b>
+	 */
 	protected int playerToInt(final PLAYER_N n)
 	{ return (n == PLAYER_N.ONE) ? 0 : 1; }
 	
+	/** Renvoie true si l'attaque qui vient d'être effectuer à touché un bateau adverse, false sinon */
 	private boolean attackTouche()
 	{ return m_current_attack_data[m_current_attacking_player].status != ATTAQUE_STATUS.EAU; }
 	
+	/**  
+	 * Ces deux fonctions font s'attaquer les joueurs. Elles prennent en paramètre la position à laquelle
+	 * le joueur qui attaque, attaque le joueur qui se fait attaquer
+	 */
 	private ATTAQUE_STATUS player_one_attacke_player_two(final Position pos)
 	{ return m_players[1].getAttacked(pos); }
 	
 	private ATTAQUE_STATUS player_two_attacke_player_one(final Position pos)
 	{ return m_players[0].getAttacked(pos); }
 	
-
+	/**
+	 * Cette fonction récupère l'attaque que le joueur vient de faire et dit s'il a déjà attaqué au même endroit ou pas
+	 * Si la valeur de retour est true le joueur n'a jamais attaqué à cet endroit
+	 * Si c'est false le joueur n'est pas très intelligent et a au moins attaquer une fois au même endroit
+	 */
 	private boolean firstTimeAttack()
 	{	
 		final ArrayList<AttackData> attacking_player_attack_datas = m_players[m_current_attacking_player].getAttaqueData();
@@ -213,6 +241,10 @@ public abstract class Bataille
 		return true;
 	}
 
+	/**
+	 * Cette fonction permet de savoir si un joueur à gagné ou pas.
+	 * Un joueur a gagné si tous les bateaux adverses ont été coulé
+	 */
 	private boolean playerWins(final int p)
 	{
 		boolean ret = true;
