@@ -1,7 +1,7 @@
 package core;
 
 /**
- * Représente une position en deux dimensions
+ * Représente une position en deux dimensions avec les composantes x et y
  */
 public class Position
 {

@@ -2,6 +2,13 @@ package core;
 
 import java.util.ArrayList;
 
+/**
+ * Bataille est une classe abstraite qui sert de classe de base pour implémenter
+ * la logique de toutes les autres batailles.
+ * Elle fournit une interface ainsi qu'une fonction abstraite <strong>getType</strong>
+ * qui permet récupérer le type d'une bataille.
+ *
+ */
 public abstract class Bataille
 {
 	protected Joueur[] m_players;
