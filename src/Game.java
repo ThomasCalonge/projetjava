@@ -46,7 +46,7 @@ public class Game
 	private static void create_bataille(BatailleManager bm)
 	{
 		bm.setType(select_type());
-		//bm.setMode(select_mode());
+		bm.setMode(select_mode());
 	}
 
 	private static Bataille.TYPE select_type()
@@ -98,11 +98,11 @@ public class Game
 		{
 			System.out.println("*-------------------------------*");
 			System.out.println("*-------------------------------*");
-			System.out.println("Le Joueur " + PLAYER_N.toString(b.getCurrentAttackingPlayer()) + " attaque:");
-			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
+			System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
+			print(b.getCurrentAttackingPlayer().getBoatsList());
 			System.out.println("*-------------------------------*");
-			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
-			Position attackPos = b.getPlayer(b.getCurrentAttackingPlayer()).getAttackPos(b.getType());
+			printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
+			Position attackPos = b.getCurrentAttackingPlayer().getAttackPos(b.getType());
 			
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
 			System.out.println(ATTAQUE_STATUS.toString(s));
