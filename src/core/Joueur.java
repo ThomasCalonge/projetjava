@@ -57,7 +57,7 @@ public abstract class Joueur
 
 	public void pushAttaqueData (final AttackData data) { m_attaque_data.add(data); }
 	public ArrayList<AttackData> getAttaqueData () { return m_attaque_data; }
-	public abstract Position getAttackPos();
+	public abstract Position getAttackPos(Bataille.TYPE type);
 	
 	private boolean testHCollision (final Bateau b, final Position pos)
 	{

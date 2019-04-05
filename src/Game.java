@@ -33,9 +33,9 @@ public class Game
 		b.addPlayer(PLAYER_N.ONE, p1);
 		b.addPlayer(PLAYER_N.TWO, p2);
 
-		add_player_boat(b, PLAYER_N.ONE);
-		add_player_boat(b, PLAYER_N.TWO);
-		
+		p1.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(2, 2)));
+		p2.placeBoat(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.V, new Position(6,1)));
+
 		b.addPlayer(PLAYER_N.ONE, p1);
 		b.addPlayer(PLAYER_N.TWO, p2);
 		
@@ -52,6 +52,7 @@ public class Game
 	private static void create_bataille(BatailleManager bm)
 	{
 		bm.setType(select_type());
+		//bm.setMode(select_mode());
 	}
 
 	private static Bataille.TYPE select_type()
@@ -61,13 +62,38 @@ public class Game
 		System.out.println("Choisire un type de bataille:");
 		System.out.println("1 - Navale");
 		System.out.println("2 - Radar");
+		System.out.println("3 - Artillerie");
+		System.out.println("4 - Alerte Rouge");
 
-		int choice = choose_int(1,2);
+		int choice = choose_int(1,4);
 
 		if (choice == 2)
 			type = TYPE.RADAR;
+		else if (choice == 3)
+			type = TYPE.ARTILLERIE;
+		else if (choice == 4)
+			type = TYPE.ALERTE_ROUGE;
 
 		return type;
+	}
+
+	private static Bataille.MODE select_mode()
+	{
+		Bataille.MODE mode = Bataille.MODE.DEMO;
+
+		System.out.println("Sélectionner le mode de Bataille:");
+		System.out.println("1 - Démo");
+		System.out.println("2 - Un Joueur");
+		System.out.println("3 - Deux Joueurs");
+
+		final int choice = choose_int(1, 3);
+
+		if (choice == 2)
+			mode = Bataille.MODE.UN_JOUEUR;
+		else if (choice == 3)
+			mode = Bataille.MODE.DEUX_JOUEURS;
+
+		return mode;
 	}
 
 	private static void play(Bataille b) throws Exception
@@ -82,7 +108,7 @@ public class Game
 			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
 			System.out.println("*-------------------------------*");
 			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
-			Position attackPos = b.getPlayer(b.getCurrentAttackingPlayer()).getAttackPos(); //enterAttackPos();
+			Position attackPos = b.getPlayer(b.getCurrentAttackingPlayer()).getAttackPos(b.getType());
 			
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
 			System.out.println(ATTAQUE_STATUS.toString(s));
@@ -116,18 +142,6 @@ public class Game
 		}
 
 		System.out.println(" * Gagné *");
-	}
-
-	private static Position enterAttackPos()
-	{
-		System.out.println("Entrer les coordonnée de l'attaque: ");
-		System.out.print("x");
-		final int x = choose_int(0, 9);
-
-		System.out.print("y");
-		final int y = choose_int(0, 9);
-
-		return new Position(x, y);
 	}
 	
 	private static Joueur create_player(final Bataille.PLAYER_N n)
