@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import core.*;
@@ -7,13 +6,13 @@ import core.Bataille.MODE;
 import core.Bataille.PLAYER_N;
 import core.Bataille.TYPE;
 
-public class Game 
-{
+public class Game {
 	private static Scanner sc;
-	public static void main(String[] args) 
-	{
+
+	public static void main(String[] args) {
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
+		Helper.choose_int(4, 1, sc);
 		create_bataille(bm);
 		bm.setMode(MODE.DEUX_JOUEURS);
 		Bataille b = bm.create();
@@ -21,12 +20,16 @@ public class Game
 		b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
 		b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
 
-		add_player_boat(b, PLAYER_N.ONE);
-		add_player_boat(b, PLAYER_N.TWO);
-		
+		if (false) {
+			add_player_boat(b, PLAYER_N.ONE);
+			add_player_boat(b, PLAYER_N.TWO);
+		} else {
+			b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+			b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
+		}
+
 		try {
 			play(b);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,59 +37,31 @@ public class Game
 		sc.close();
 	}
 
-	private static void create_bataille(BatailleManager bm)
-	{
+	private static void create_bataille(BatailleManager bm) {
 		bm.setType(select_type());
 		bm.setMode(select_mode());
 	}
 
-	private static Bataille.TYPE select_type()
-	{
-		Bataille.TYPE type = TYPE.NAVALE;
+	private static Bataille.TYPE select_type() {
+		Helper.printGameFormatted("Choisire un type de bataille:",
+				new String[] { "Navale", "Radar", "Artillerie", "Alerte Rouge" });
 
-		System.out.println("Choisire un type de bataille:");
-		System.out.println("1 - Navale");
-		System.out.println("2 - Radar");
-		System.out.println("3 - Artillerie");
-		System.out.println("4 - Alerte Rouge");
-
-		int choice = choose_int(1,4);
-
-		if (choice == 2)
-			type = TYPE.RADAR;
-		else if (choice == 3)
-			type = TYPE.ARTILLERIE;
-		else if (choice == 4)
-			type = TYPE.ALERTE_ROUGE;
-
-		return type;
+		int choice = Helper.choose_int(1, 4, sc);
+		return (new Bataille.TYPE[] { TYPE.NAVALE, TYPE.RADAR, TYPE.ARTILLERIE, TYPE.ALERTE_ROUGE })[choice];
 	}
 
-	private static Bataille.MODE select_mode()
-	{
-		Bataille.MODE mode = Bataille.MODE.DEMO;
+	private static Bataille.MODE select_mode() {
+		Helper.printGameFormatted("Sélectionner le mode de Bataille:",
+				new String[] { "Démo", "Un Joueur", "Deux Joueurs" });
 
-		System.out.println("Sélectionner le mode de Bataille:");
-		System.out.println("1 - Démo");
-		System.out.println("2 - Un Joueur");
-		System.out.println("3 - Deux Joueurs");
-
-		final int choice = choose_int(1, 3);
-
-		if (choice == 2)
-			mode = Bataille.MODE.UN_JOUEUR;
-		else if (choice == 3)
-			mode = Bataille.MODE.DEUX_JOUEURS;
-
-		return mode;
+		final int choice = Helper.choose_int(1, 3, sc);
+		return (new Bataille.MODE[] { MODE.DEMO, MODE.UN_JOUEUR, MODE.DEUX_JOUEURS })[choice];
 	}
 
-	private static void play(Bataille b) throws Exception
-	{
+	private static void play(Bataille b) throws Exception {
 		System.out.println(" * LA PARTIE COMMENCE * ");
 
-		while (b.canContinue())
-		{
+		while (b.canContinue()) {
 			System.out.println("*-------------------------------*");
 			System.out.println("*-------------------------------*");
 			System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
@@ -94,170 +69,107 @@ public class Game
 			System.out.println("*-------------------------------*");
 			printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
 			Position attackPos = b.getCurrentAttackingPlayer().getAttackPos(b.getType());
-			
+
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
 			System.out.println(ATTAQUE_STATUS.toString(s));
-	
-			if (!b.attacking_player_can_reattack())
-			{
-				if (b.getType() == Bataille.TYPE.RADAR)
-				{
-					System.out.println("Bateau le plus proche: " + ((Radar)b).radar_reponse(attackPos));
+
+			if (!b.attacking_player_can_reattack()) {
+				if (b.getType() == Bataille.TYPE.RADAR) {
+					System.out.println("Bateau le plus proche: " + ((Radar) b).radar_reponse(attackPos));
 				}
 
 				b.switchAttackingPlayer();
 
 				System.out.println("Appuyer pour passer au Joueur suivant");
 				System.in.read();
-	
+
 				int i = 3;
-	
+
 				System.out.println("Changement de Joueur dans:");
-				while (i > 0)
-				{
+				while (i > 0) {
 					System.out.println(i--);
 					Thread.sleep(1000);
 				}
-	
-				for (int j = 0; j < 100; ++j)
-				{
-					System.out.println();
-				}
+
+				Helper.pass(100);
 			}
 		}
 
 		System.out.println(" * Gagné *");
 	}
-	
-	private static Joueur create_player(final Bataille.PLAYER_N n)
-	{
+
+	private static Joueur create_player(final Bataille.PLAYER_N n) {
 		System.out.print("nom (Joueur " + PLAYER_N.toString(n) + ") : ");
-		
 		return new HumanCmdPlayer(sc.nextLine(), sc);
 	}
-	
-	private static void add_player_boat(Bataille b, final PLAYER_N n)
-	{
+
+	private static void add_player_boat(Bataille b, final PLAYER_N n) {
 		System.out.println(b.getPlayer(n).getName() + " place ses bateaux");
 
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.PORTE_AVION));
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.SOUS_MARIN));
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.CUIRASSE));
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.CUIRASSE));
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		b.placePlayerBoat(n, create_boat(Bateau.TYPE.ZODIAC));
-		print(b.getPlayer(n).getBoatsList());
-		System.out.println();
-
-		for (int i = 0; i < 100; ++i)
-		{ System.out.println("*"); }
+		placeAndDisplayAllPlayerBoats(b, n);
+		Helper.pass(100);
 	}
-	
-	private static Bateau create_boat(final Bateau.TYPE t)
-	{
+
+	private static void placeAndDisplayAllPlayerBoats(final Bataille b, final PLAYER_N n) {
+		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.PORTE_AVION);
+		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.SOUS_MARIN);
+		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.CUIRASSE);
+		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.CUIRASSE);
+		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.ZODIAC);
+	}
+
+	private static void placeAndDisplayPLayerBoat(final Bataille b, final PLAYER_N n, final Bateau.TYPE t) {
+		b.placePlayerBoat(n, create_boat(t));
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
+	}
+
+	private static Bateau create_boat(final Bateau.TYPE t) {
 		System.out.println("** Choix du " + Bateau.TYPE.toString(t) + " **");
 		return choose_boat(t);
 	}
-	
-	private static Bateau choose_boat(final Bateau.TYPE t)
-	{
+
+	private static Bateau choose_boat(final Bateau.TYPE t) {
 		return new Bateau(t, choose_o(), choose_p());
 	}
-	
-	private static ORIENTATION  choose_o ()
-	{
-		System.out.println("Veuillez sélectionner l'orientation du bateau:");
-		System.out.println(" - 1  : Verticale");
-		System.out.println(" - 2+ : Horizontale");
-		System.out.print("choix ? ");
-		
-		final int choix = sc.nextInt();
-		ORIENTATION ret = ORIENTATION.V;
-		
-		if (choix >= 2)
-			ret = ORIENTATION.H;
-		
-		return ret;
+
+	private static ORIENTATION choose_o() {
+		Helper.printGameFormatted("Veuillez sélectionner l'orientation du bateau:",
+				new String[] { "Verticale", "Horizontale" });
+
+		final int choice = Helper.choose_int(1, 2, sc);
+		return (choice == 1) ? ORIENTATION.V : ORIENTATION.H;
 	}
-	
-	private static Position choose_p()
-	{
-		Position ret = new Position(0,0);
+
+	private static Position choose_p() {
+		Position ret = new Position(0, 0);
 		System.out.println("Veuillez choisir une position:");
 		System.out.println("* Choix de l'abssice (x) *");
-		ret.x = choose_int(0, 9);
-		
+		ret.x = Helper.choose_int(0, 9, sc);
+
 		System.out.println("* Choix de l'ordonnée (y) *");
-		ret.y = choose_int(0, 9);
-		
+		ret.y = Helper.choose_int(0, 9, sc);
+
 		return ret;
 	}
 
-	private static int choose_int(final int min, final int max)
-	{
-		int choix = 0;
-		
-		do
-		{
-			System.out.print(" > (" + min + ";" + max + ") ");
-			try
-			{
-				choix = sc.nextInt();
-			}
-			catch(InputMismatchException e)
-			{
-				System.err.println("Veuillez entrer un nombre entier");
-			}
-			
-			sc.nextLine();
-
-		}while((choix < min) || (choix > max));
-		
-		return choix;
-	}
-	
-	public static void print(ArrayList<Bateau> boats)
-	{
+	public static void print(ArrayList<Bateau> boats) {
 		System.out.println("  A B C D E F G H I J");
-		for(int y = 0; y < 10; ++y)
-		{
+		for (int y = 0; y < 10; ++y) {
 			System.out.print(y + " ");
-			for (int x = 0; x < 10; ++x)
-			{
+			for (int x = 0; x < 10; ++x) {
 				char to_print = '.';
-				
-				for (Bateau b: boats)
-				{
-					if (b.o == ORIENTATION.H)
-					{
-						if (y == b.pos.y)
-						{
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type)))
-							{
+
+				for (Bateau b : boats) {
+					if (b.o == ORIENTATION.H) {
+						if (y == b.pos.y) {
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type))) {
 								to_print = b.getDamage(x - b.pos.x) ? 'x' : '-';
 							}
 						}
-					}
-					else
-					{
-						if (x == b.pos.x)
-						{
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type)))
-							{
+					} else {
+						if (x == b.pos.x) {
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type))) {
 								to_print = b.getDamage(y - b.pos.y) ? 'x' : '|';
 							}
 						}
@@ -271,32 +183,25 @@ public class Game
 		}
 	}
 
-	static void printAttaqueData(final ArrayList<AttackData> datas)
-	{
+	static void printAttaqueData(final ArrayList<AttackData> datas) {
 		System.out.println("  A B C D E F G H I J");
-		for (int y = 0; y < 10; ++y)
-		{
+		for (int y = 0; y < 10; ++y) {
 			System.out.print(y + " ");
-			for (int x = 0; x < 10; ++x)
-			{
+			for (int x = 0; x < 10; ++x) {
 				char to_print = '.';
-				for (AttackData d: datas)
-				{
-					if ((d.pos.x == x) && (d.pos.y == y))
-					{
-						switch(d.status)
-						{
-							case EAU:
-								to_print = 'E';
-								break;
-							case TOUCHE:
-							case COULE:
-								to_print = 'x';
-								break;
+				for (AttackData d : datas) {
+					if ((d.pos.x == x) && (d.pos.y == y)) {
+						switch (d.status) {
+						case EAU:
+							to_print = 'E';
+							break;
+						case TOUCHE:
+						case COULE:
+							to_print = 'x';
+							break;
 						}
 					}
 				}
-
 				System.out.print(to_print + " ");
 			}
 			System.out.println();
