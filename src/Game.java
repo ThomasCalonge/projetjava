@@ -215,7 +215,16 @@ public class Game
 		do
 		{
 			System.out.print(" > (" + min + ";" + max + ") ");
-			choix = sc.nextInt();
+			try
+			{
+				choix = sc.nextInt();
+			}
+			catch(InputMismatchException e)
+			{
+				System.err.println("Veuillez entrer un nombre entier");
+			}
+			
+			sc.nextLine();
 
 		}while((choix < min) || (choix > max));
 		
