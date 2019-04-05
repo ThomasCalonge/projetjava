@@ -86,6 +86,14 @@ public abstract class Bataille
 		/** littéral représentant le premier joueur */ONE,
 		/** littéral représentant le deuxième joueur */TWO;
 
+		/**
+		 * Renvoie une chaîne de caractère décrivant une valeur de <strong>PLAYER_N</strong><br>
+		 * La chaîne sera une traduction d'une valeur de PLAYER_N en le chiffre quelle représente. Par exemple:
+		 * {@code toString(PLAYER_N.ONE)} retourne la chaîne de caractère "1"
+		 * 
+		 * @param n la valeur de PLAYER_N a transformer
+		 * @return la chaîne de caractère correspondant à <b>n</b>
+		 */
 		static public String toString (final PLAYER_N n)
 		{ return (n == PLAYER_N.ONE) ? "1" : "2"; }
 	}
