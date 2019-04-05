@@ -30,8 +30,11 @@ public class Game
 		b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
 		b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
 
-		add_player_boat(b, PLAYER_N.ONE);
-		add_player_boat(b, PLAYER_N.TWO);
+		//add_player_boat(b, PLAYER_N.ONE);
+		//add_player_boat(b, PLAYER_N.TWO);
+
+		b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(2,2)));
+		b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.V, new Position(5,5)));
 		
 		try {
 			play(b);
