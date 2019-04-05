@@ -133,7 +133,7 @@ public class IA extends Joueur {
 	}
 
 	@Override
-	public Position getAttackPos() {
+	public Position getAttackPos(Bataille.TYPE type) {
 		return null;
 	}
 

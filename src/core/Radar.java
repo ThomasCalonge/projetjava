@@ -1,17 +1,12 @@
 package core;
 
-import java.util.ArrayList;
-
 public class Radar extends Bataille {
 
 	public Radar(final MODE mode) {
 		super(mode);
-		// TODO Auto-generated constructor stub
 	}
 
 	public int radar_reponse(final Position pos) {
-
-		ArrayList<Bateau> bateau_ennemi = m_players[(PLAYER_N.toInt(getCurrentAttackingPlayer()) + 1) % 2].getBoatsList();
 		// Il faut l'attaque status et la position lors de l'attaque en argument
 		// Par exemple lorsque l'on tire, et que l'on est en radar si on touche l'eau ça
 		// appelle cette fonction
@@ -21,31 +16,12 @@ public class Radar extends Bataille {
 		int pivot_deb_y = Math.max(pos.y - 1, 0);
 		int pivot_fin_y = Math.min(pos.y + 1, 9);
 		boolean found = false;
-		boolean recherche = true;
 		int count = 0;
-
-		int[][] matrice = new int[10][10];
-
-		for (int y = 0; y < 10; ++y) {
-			for (int x = 0; x < 10; ++x) {
-				matrice[x][y] = 0;
-				for (Bateau b : bateau_ennemi) {
-					if (b.o == ORIENTATION.H) {
-						if (y == b.pos.y) {
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type))) {
-								matrice[x][y] = 1;
-							}
-						}
-					} else {
-						if (x == b.pos.x) {
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type))) {
-								matrice[x][y] = 1;
-							}
-						}
-					}
-				}
-			}
-		}
+		
+		// Modification Adrien (aka DridriLaBastos): J'ai ajouté une fonction qui retourne la matrice des bateaux dans la classe bataille
+		// Comme on veut les bateaux ennemis, si le joueurs qui attaque est le joueur 1 on utilise la valeur PLAYER_N.TWO qui correspond au joueur 2
+		// sinon on utilise la valeur PLAYER_N.ONE qui correspond au joueur 1
+		int[][] matrice = getBoatsMatrice((m_current_attacking_player == 0) ? PLAYER_N.TWO : PLAYER_N.ONE);
 
 		while (found != true) 
 		{
@@ -54,7 +30,8 @@ public class Radar extends Bataille {
 			{
 				for (int i = pivot_deb_x; i <= pivot_fin_x; i++) 
 				{
-					if (matrice[i][j] == 1)
+					// Adrien: La matrice contient une valeur supérieure ou égale à 1 un s'il y a un bateau
+					if (matrice[i][j] >= 1)
 					{
 						found = true;
 						break;

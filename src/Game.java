@@ -1,43 +1,28 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import core.*;
+import core.Bataille.MODE;
 import core.Bataille.PLAYER_N;
+import core.Bataille.TYPE;
 
-/**
- * Classe qui blablabla et
- * blablabla et bliblanlu et
- * bloblobloblan. 
- * <p>De plus,  
- * blabliblablu
- * 
- * @author Adrien COURNAND
- */
 public class Game 
 {
 	private static Scanner sc;
-	private static boolean cont = true;
 	public static void main(String[] args) 
 	{
 		sc = new Scanner(System.in);
 		BatailleManager bm = new BatailleManager();
-		bm.setMode(Bataille.MODE.DEUX_JOUEURS);
-		bm.setType(Bataille.TYPE.NAVALE);
+		create_bataille(bm);
+		bm.setMode(MODE.DEUX_JOUEURS);
 		Bataille b = bm.create();
-		
-		Joueur p1 = create_player(PLAYER_N.ONE);
-		Joueur p2 = create_player(PLAYER_N.TWO);
 
-		b.addPlayer(PLAYER_N.ONE, p1);
-		b.addPlayer(PLAYER_N.TWO, p2);
+		b.addPlayer(PLAYER_N.ONE, create_player(PLAYER_N.ONE));
+		b.addPlayer(PLAYER_N.TWO, create_player(PLAYER_N.TWO));
 
 		add_player_boat(b, PLAYER_N.ONE);
 		add_player_boat(b, PLAYER_N.TWO);
-		
-		b.addPlayer(PLAYER_N.ONE, p1);
-		b.addPlayer(PLAYER_N.TWO, p2);
 		
 		try {
 			play(b);
@@ -49,6 +34,53 @@ public class Game
 		sc.close();
 	}
 
+	private static void create_bataille(BatailleManager bm)
+	{
+		bm.setType(select_type());
+		bm.setMode(select_mode());
+	}
+
+	private static Bataille.TYPE select_type()
+	{
+		Bataille.TYPE type = TYPE.NAVALE;
+
+		System.out.println("Choisire un type de bataille:");
+		System.out.println("1 - Navale");
+		System.out.println("2 - Radar");
+		System.out.println("3 - Artillerie");
+		System.out.println("4 - Alerte Rouge");
+
+		int choice = choose_int(1,4);
+
+		if (choice == 2)
+			type = TYPE.RADAR;
+		else if (choice == 3)
+			type = TYPE.ARTILLERIE;
+		else if (choice == 4)
+			type = TYPE.ALERTE_ROUGE;
+
+		return type;
+	}
+
+	private static Bataille.MODE select_mode()
+	{
+		Bataille.MODE mode = Bataille.MODE.DEMO;
+
+		System.out.println("Sélectionner le mode de Bataille:");
+		System.out.println("1 - Démo");
+		System.out.println("2 - Un Joueur");
+		System.out.println("3 - Deux Joueurs");
+
+		final int choice = choose_int(1, 3);
+
+		if (choice == 2)
+			mode = Bataille.MODE.UN_JOUEUR;
+		else if (choice == 3)
+			mode = Bataille.MODE.DEUX_JOUEURS;
+
+		return mode;
+	}
+
 	private static void play(Bataille b) throws Exception
 	{
 		System.out.println(" * LA PARTIE COMMENCE * ");
@@ -57,11 +89,11 @@ public class Game
 		{
 			System.out.println("*-------------------------------*");
 			System.out.println("*-------------------------------*");
-			System.out.println("Le Joueur " + PLAYER_N.toString(b.getCurrentAttackingPlayer()) + " attaque:");
-			print(b.getPlayer(b.getCurrentAttackingPlayer()).getBoatsList());
+			System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
+			print(b.getCurrentAttackingPlayer().getBoatsList());
 			System.out.println("*-------------------------------*");
-			printAttaqueData(b.getPlayer(b.getCurrentAttackingPlayer()).getAttaqueData());
-			Position attackPos = b.getPlayer(b.getCurrentAttackingPlayer()).getAttackPos(); //enterAttackPos();
+			printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
+			Position attackPos = b.getCurrentAttackingPlayer().getAttackPos(b.getType());
 			
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
 			System.out.println(ATTAQUE_STATUS.toString(s));
@@ -71,7 +103,6 @@ public class Game
 				if (b.getType() == Bataille.TYPE.RADAR)
 				{
 					System.out.println("Bateau le plus proche: " + ((Radar)b).radar_reponse(attackPos));
-					System.in.read();
 				}
 
 				b.switchAttackingPlayer();
@@ -96,18 +127,6 @@ public class Game
 		}
 
 		System.out.println(" * Gagné *");
-	}
-
-	private static Position enterAttackPos()
-	{
-		System.out.println("Entrer les coordonnée de l'attaque: ");
-		System.out.print("x");
-		final int x = choose_int(0, 9);
-
-		System.out.print("y");
-		final int y = choose_int(0, 9);
-
-		return new Position(x, y);
 	}
 	
 	private static Joueur create_player(final Bataille.PLAYER_N n)
@@ -187,7 +206,7 @@ public class Game
 		
 		return ret;
 	}
-	
+
 	private static int choose_int(final int min, final int max)
 	{
 		int choix = 0;
@@ -195,8 +214,19 @@ public class Game
 		do
 		{
 			System.out.print(" > (" + min + ";" + max + ") ");
-			choix = sc.nextInt();
+			try
+			{
+				choix = sc.nextInt();
+			}
+			catch(InputMismatchException e)
+			{
+				System.err.println("Veuillez entrer un nombre entier");
+			}
+			
+			sc.nextLine();
+
 		}while((choix < min) || (choix > max));
+		
 		return choix;
 	}
 	
@@ -273,6 +303,3 @@ public class Game
 		}
 	}
 }
-
-
-//Thread t = new Thread(){ public void run(){ }};

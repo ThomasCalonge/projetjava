@@ -80,14 +80,8 @@ public abstract class Joueur
 	 */
 	public void pushAttaqueData (final AttackData data) { m_attaque_data.add(data); }
 	public ArrayList<AttackData> getAttaqueData () { return m_attaque_data; }
-	
-	/**
-	 * Fonction appelée lorsque c'est au joueur de choisir les coordonnées auxquelles
-	 * il veut attaquer
-	 * 
-	 * @return Une instance de Position contenant les coordonnées d'une attaque
-	 */
-	public abstract Position getAttackPos();
+
+	public abstract Position getAttackPos(Bataille.TYPE type);
 	
 	/// Fonctions interne à la classe
 	
