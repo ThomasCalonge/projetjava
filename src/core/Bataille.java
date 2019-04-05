@@ -5,9 +5,12 @@ import java.util.ArrayList;
 /**
  * Bataille est une classe abstraite qui sert de classe de base pour implémenter
  * la logique de toutes les autres batailles.
- * Elle fournit une interface ainsi qu'une fonction abstraite <strong>getType</strong>
+ * Elle fournit une interface ainsi qu'une fonction abstraite {@linkplain core.Bataille#getType() <b>getType</b>}
  * qui permet récupérer le type d'une bataille.
- *
+ * 
+ * Enfin elle déclare plusieurs énumération afin de faciliter et d'encapsuler certaind élément
+ * nécessaire à la description d'une bataille: le type, le mode de jeux et
+ * une énumération pour accéder à un numéro de joueur.
  */
 public abstract class Bataille
 {
@@ -15,26 +18,80 @@ public abstract class Bataille
 	protected PLAYER_N m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
 	
+	/**
+	 * Enumération qui permet de représenter les différents types d'une bataille.
+	 * Les types vont influencer la façon de saisir les coordonnées et la façon d'attaquer
+	 */
 	public enum TYPE
 	{
+		/** 
+		* Bataille Navale Classique: Les coordonées sont sélectionnées à la suite 
+		*/
 		NAVALE,
-		ARTILLERIE,
+		
+		/** 
+		 * Bataille Navale Radar : Les coordonnées sont sélectionnées de façon standard<br>
+		 * mais la distance entre le point d'attaque et le bateau le plus proche
+		 * est affichée après chaque tirs ratés.
+		 */
 		RADAR,
+		
+		/**
+		 * Bataille Navale Artillerie : La coordonnée verticale est dabord sélectionnée.
+		 * Ensuite les coordonnées horizontale défile l'une après l'autre et il faut choisir la bonne
+		 */
+		ARTILLERIE,
+		
+		/**
+		 * Bataille Navale Alerte-Rouge: Ce mode mélange tous les modes de bataille,
+		 * l'attaque ce fait à la façon d'une bataille navale radar
+		 * et la sélection des coordonnées se fait à la façon d'une bataille navale
+		 * artillerie
+		 * @see core.Bataille.TYPE#RADAR
+		 * @see core.Bataille.TYPE#ARTILLERIE
+		 */
 		ALERTE_ROUGE;
 	}
 	
+	/**
+	 * Enumération qui permet de représenter les différents modes d'une bataille.
+	 * Le mode d'une bataille définit le type de joueur qui pourront y jouer.<br>
+	 * <ul>
+	 * 	<li><strong>DEMO</strong>: ce mode fait s'affronter deux IA
+	 * 	et laisse le spectateur regarder le déroulement de la bataille</li>
+	 * <li><strong>UN_JOUEUR</strong>: ce mode fait s'affronter un joueur humain et une IA</li>
+	 * <li><strong>DEUX_JOUEURS</strong>: ce mode fait s'affronter deux joueurs humains</li>
+	 * </ul>
+	 */
 	public enum MODE
 	{
-		DEMO,
-		UN_JOUEUR,
-		DEUX_JOUEURS;
+		/** IA vs IA */ DEMO,
+		/** Humain vs IA */ UN_JOUEUR,
+		/** Humain vs Humain*/ DEUX_JOUEURS;
 	}
-
+	
+	/**
+	 * PLAYER_N permet d'associer un littéral à un numéro de joueur,
+	 * afin d'éviter d'avoir des chiffres en dur dans le code.<br>
+	 * Sans cette énumération, récupérer une instance d'un joueur de la bataille s'écrirait:<br>
+	 * {@code b.getPlayer(0);}<br>
+	 * Ce qui nécessite de savoir que la classe stocke le premier joueur à l'indice 0 
+	 * de quelque chose. Or cette information n'est pas intéressante 
+	 * pour qui que ce soit en dehors de la classe. Ainsi on préfèrera écrire:
+	 * {@code b.getPLayer(PLAYER_N.ONE); }<br>
+	 * pour un même résultat
+	 */
 	public enum PLAYER_N
 	{
-		ONE,
-		TWO;
+		/** littéral représentant le premier joueur */ONE,
+		/** littéral représentant le deuxième joueur */TWO;
 		
+		/**
+		 * Méthode static permettant de convertir une valeur de PLAYER_N en entier
+		 * @param p une valeur de PLAYER_N à convertir en int
+		 * @return l'entier correspondant à la valeur de PLAYER_N. La valeur {@code PLAYER_N.ONE} est convertir en zéro puis les autres valeurs
+		 * corresponde à une incrémentation de 0
+		 */
 		public static int toInt(final PLAYER_N p)
 		{
 			int ret = 0;
