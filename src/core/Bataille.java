@@ -78,6 +78,42 @@ public abstract class Bataille
 		m_current_attacking_player = PLAYER_N.ONE;
 		m_current_attack_data = new AttackData[2];
 	}
+
+	public int[][] getBoatsMatrice(final PLAYER_N n)
+	{
+		int[][] matrice = new int[10][10];
+		ArrayList<Bateau> boats = m_players[PLAYER_N.toInt(n)].getBoatsList();
+
+		for(int y = 0; y < 10; ++y)
+		{
+			for (int x = 0; x < 10; ++x)
+			{
+				int value = 0;	
+				for (Bateau b: boats)
+				{
+					if (b.o == ORIENTATION.H)
+					{
+						if (y == b.pos.y)
+						{
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type)))
+								value = b.getDamage(x - b.pos.x) ? 2 : 1;
+						}
+					}
+					else
+					{
+						if (x == b.pos.x)
+						{
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type)))
+								value = b.getDamage(y - b.pos.y) ? 2 : 1;
+						}
+					}
+				}
+				matrice[x][y] = value;
+			}
+		}
+
+		return matrice;
+	}
 	
 	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ m_players[PLAYER_N.toInt(n)] = p; }
