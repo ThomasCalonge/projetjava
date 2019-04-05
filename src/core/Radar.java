@@ -19,8 +19,8 @@ public class Radar extends Bataille {
 		int count = 0;
 		
 		// Modification Adrien (aka DridriLaBastos): J'ai ajouté une fonction qui retourne la matrice des bateaux dans la classe bataille
-		// Comme on veut les bateaux ennemis, si le joueurs qui attaque est le joueur 0 on utilise la PLAYER_N.TWO (le joueur deux)
-		// sinon le joueur 1
+		// Comme on veut les bateaux ennemis, si le joueurs qui attaque est le joueur 1 on utilise la valeur PLAYER_N.TWO qui correspond au joueur 2
+		// sinon on utilise la valeur PLAYER_N.ONE qui correspond au joueur 1
 		int[][] matrice = getBoatsMatrice((m_current_attacking_player == 0) ? PLAYER_N.TWO : PLAYER_N.ONE);
 
 		while (found != true) 
@@ -30,7 +30,7 @@ public class Radar extends Bataille {
 			{
 				for (int i = pivot_deb_x; i <= pivot_fin_x; i++) 
 				{
-					// Adrien: La matrice contient une valeur supérieure ou égale à un s'il y a un bateau
+					// Adrien: La matrice contient une valeur supérieure ou égale à 1 un s'il y a un bateau
 					if (matrice[i][j] >= 1)
 					{
 						found = true;
