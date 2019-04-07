@@ -19,31 +19,35 @@ public abstract class Bataille
 	protected AttackData [] m_current_attack_data;
 	
 	/**
-	 * Enumération qui permet de représenter les différents types d'une bataille.
+	 * Représente les différents types d'une bataille.
 	 * Les types vont influencer la façon de saisir les coordonnées et la façon d'attaquer
 	 */
 	public enum TYPE
 	{
 		/** 
-		* Bataille Navale Classique: Les coordonées sont sélectionnées à la suite 
+		* Bataille Navale Classique.
+		* Les coordonées sont sélectionnées à la suite 
 		*/
 		NAVALE,
 		
 		/** 
-		 * Bataille Navale Radar : Les coordonnées sont sélectionnées de façon standard<br>
+		 * Bataille Navale Radar.
+		 * Les coordonnées sont sélectionnées de façon standard<br>
 		 * mais la distance entre le point d'attaque et le bateau le plus proche
 		 * est affichée après chaque tirs ratés.
 		 */
 		RADAR,
 		
 		/**
-		 * Bataille Navale Artillerie : La coordonnée verticale est dabord sélectionnée.
+		 * Bataille Navale Artillerie.
+		 * La coordonnée verticale est dabord sélectionnée.
 		 * Ensuite les coordonnées horizontale défile l'une après l'autre et il faut choisir la bonne
 		 */
 		ARTILLERIE,
 		
 		/**
-		 * Bataille Navale Alerte-Rouge: Ce mode mélange tous les modes de bataille,
+		 * Bataille Navale Alerte-Rouge.
+		 * Ce mode mélange tous les modes de bataille,
 		 * l'attaque ce fait à la façon d'une bataille navale radar
 		 * et la sélection des coordonnées se fait à la façon d'une bataille navale
 		 * artillerie
@@ -54,7 +58,7 @@ public abstract class Bataille
 	}
 	
 	/**
-	 * Enumération qui permet de représenter les différents modes d'une bataille.
+	 * Représente les différents modes d'une bataille.
 	 * Le mode d'une bataille définit le type de joueur qui pourront y jouer.<br>
 	 * <ul>
 	 * 	<li><strong>DEMO</strong>: ce mode fait s'affronter deux IA
@@ -71,23 +75,24 @@ public abstract class Bataille
 	}
 	
 	/**
-	 * PLAYER_N permet d'associer un littéral à un numéro de joueur,
-	 * afin d'éviter d'avoir des chiffres en dur dans le code.<br>
+	 * Associe un littéral à un numéro de joueur.
+	 * Cela permet d'éviter d'avoir des chiffres en dur dans le code.<br>
 	 * Sans cette énumération, récupérer une instance d'un joueur de la bataille s'écrirait:<br>
 	 * {@code b.getPlayer(0);}<br>
-	 * Ce qui nécessite de savoir que la classe stocke le premier joueur à l'indice 0 
-	 * de quelque chose. Or cette information n'est pas intéressante 
+	 * Ce qui nécessite de savoir que la classe stocke le premier joueur à l'indice 0 d'une collection.
+	 * Or cette information n'est pas intéressante 
 	 * pour qui que ce soit en dehors de la classe. Ainsi on préfèrera écrire:
 	 * {@code b.getPLayer(PLAYER_N.ONE); }<br>
 	 * pour un même résultat
+	 * @see java.util.Collection
 	 */
 	public enum PLAYER_N
 	{
-		/** littéral représentant le premier joueur */ONE,
-		/** littéral représentant le deuxième joueur */TWO;
+		/** Littéral représentant le premier joueur */ONE,
+		/** Littéral représentant le deuxième joueur */TWO;
 
 		/**
-		 * Renvoie une chaîne de caractère décrivant une valeur de <strong>PLAYER_N</strong><br>
+		 * Renvoie une chaîne de caractère décrivant une valeur de <strong>PLAYER_N</strong><br>.
 		 * La chaîne sera une traduction d'une valeur de PLAYER_N en le chiffre quelle représente. Par exemple:
 		 * {@code toString(PLAYER_N.ONE)} retourne la chaîne de caractère "1"
 		 * 
