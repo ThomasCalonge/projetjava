@@ -10,7 +10,7 @@ public class StartScreen extends JFrame {
 	String[] tabMode = { "DEMO", "UN JOUEUR", "DEUX JOUEURS" };
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JComboBox Mode = new JComboBox(tabMode);
-	private JLabel nomDifficulte = new JLabel("DifficultÃ© : ");
+	private JLabel nomDifficulte = new JLabel("Difficulté : ");
 	String[] tabDifficulte = { "FACILE", "MOYEN", "DUR" };
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox Difficulte = new JComboBox(tabDifficulte);
