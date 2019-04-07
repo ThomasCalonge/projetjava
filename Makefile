@@ -17,7 +17,7 @@ gui:
 	javac -classpath bin -sourcepath src -d bin src/gui/*.java
 
 doc:
-	javadoc -classpath ./bin -sourcepath ./src -protected -d ./doc -html5 core gui src/*.java
+	javadoc -classpath ./bin -sourcepath ./src -protected -d ./docs -html5 core gui src/*.java
 
 run:
 	@cd bin; java Game
