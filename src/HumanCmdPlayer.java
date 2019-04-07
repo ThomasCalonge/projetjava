@@ -13,25 +13,43 @@ import core.Position;
 public class HumanCmdPlayer extends Joueur {
 
 	private Scanner m_sc;
-	private boolean m_cont = true;
+	private static boolean cont = true;
+	private static boolean init = false;
+	private static JFrame frame;
 
 	public HumanCmdPlayer(final String name, Scanner sc) {
 		super(name);
 
 		m_sc = sc;
+		initFrame();
+	}
+
+	private static void initFrame() {
+		if (!init) {
+			frame = new JFrame("Sélection de y");
+			frame.add(new JLabel(
+					"Veuillez regarder la console de jeu. \nAppuyez sur une touche pour valider la coordonnée y"),
+					BorderLayout.SOUTH);
+			frame.pack();
+			frame.setEnabled(false);
+			frame.setResizable(false);
+			frame.setVisible(false);
+			frame.addKeyListener(new Keyboard());
+			frame.transferFocus();
+			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			frame.setAlwaysOnTop(true);
+			init = true;
+		}
 	}
 
 	@Override
 	public Position getAttackPos(Bataille.TYPE type) {
-		try
-		{
+		try {
 			if ((type == Bataille.TYPE.NAVALE) || (type == Bataille.TYPE.RADAR))
 				return getCmdPos();
 			else
 				return getHalfCmdPos();
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -39,10 +57,10 @@ public class HumanCmdPlayer extends Joueur {
 	private Position getCmdPos() {
 		System.out.println();
 		System.out.print("x");
-		final int x = choose_int(0, 9);
+		final int x = Helper.choose_int(0, 9, m_sc);
 
 		System.out.print("y");
-		final int y = choose_int(0, 9);
+		final int y = Helper.choose_int(0, 9, m_sc);
 
 		return new Position(x, y);
 	}
@@ -50,56 +68,35 @@ public class HumanCmdPlayer extends Joueur {
 	private Position getHalfCmdPos() throws InterruptedException {
 		System.out.println("Entrer les coordonnée de l'attaque: ");
 		System.out.print("x");
-		final int x = choose_int(0, 9);
+		cont = true;
 
+		final int x = Helper.choose_int(0, 9, m_sc);
 		int y = 0;
-		m_cont = true;
 
-		Thread t = new Thread() { public void run() { init_choice();} };
-		t.start();
-
+		switchFrameStatus();
 		System.out.print("y > ");
-
-		while (m_cont)
-		{
+		while (cont) {
 			System.out.print(y + " ");
 			Thread.sleep(1000);
-			if (m_cont)
+			if (cont)
 				y = ++y % 10;
 		}
-		t.join();
+
+		switchFrameStatus();
 		System.out.println();
 		return new Position(x, y);
 	}
 
-	private void init_choice()
-	{
-		JFrame choiceFrame = new JFrame("Entrer les coordonnée de l'attaque: ");
-		choiceFrame.add(new JLabel("Veuillez regarder la console de jeu. \nAppuyez sur une touche pour valider la coordonnée y"), BorderLayout.SOUTH);
-		choiceFrame.pack();
-		choiceFrame.setResizable(false);
-		choiceFrame.setVisible(true);
-		choiceFrame.addKeyListener(new Keyboard());
-		choiceFrame.transferFocus();
-		choiceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	private void switchFrameStatus() {
+		frame.setEnabled(!frame.isEnabled());
+		frame.setVisible(!frame.isVisible());
 	}
 
-	private int choose_int(final int min, final int max) {
-		int choix = 0;
-
-		do {
-			System.out.print(" > (" + min + ";" + max + ") ");
-			choix = m_sc.nextInt();
-		} while ((choix < min) || (choix > max));
-		return choix;
-	}
-
-	class Keyboard implements KeyListener {
+	static class Keyboard implements KeyListener {
 
 		@Override
-		public void keyTyped(KeyEvent e) 
-		{
-			m_cont = false;
+		public void keyTyped(KeyEvent e) {
+			cont = false;
 		}
 
 		@Override
