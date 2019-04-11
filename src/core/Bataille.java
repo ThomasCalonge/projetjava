@@ -151,7 +151,7 @@ public abstract class Bataille
 	
 	public abstract TYPE getType();
 
-	public void addPlayer(final PLAYER_N n, final Joueur p) throws PlayerNonNullException
+	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ 
 		//Si le joueur a déjà été ajouté il n'est pas normal que cette fonction soit appelée
 		assert(m_players[playerToInt(n)] == null);
