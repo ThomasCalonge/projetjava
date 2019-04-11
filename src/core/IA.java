@@ -1,10 +1,7 @@
 package core;
 
-import java.lang.Object;
-import java.util.Random;
 import java.util.ArrayList;
 import java.lang.Math;
-import java.lang.*;
 
 class Couple {
 	public int a;
@@ -134,7 +131,16 @@ public class IA extends Joueur {
 
 	@Override
 	public Position getAttackPos(Bataille.TYPE type) {
+		//TODO: Implémenter la sélection des coordonnées
 		return null;
+	}
+
+	@Override
+	public void placeBoat(Bateau b) {
+		//Cette fonction ne devrait jamais être appelée depuis le code pour un joueur IA
+		//C'est une erreur du programmeur et non de l'utilisateur donc on utilise une assertion
+		//plutôt qu'une exception
+		assert(false);
 	}
 
 }

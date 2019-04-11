@@ -17,6 +17,9 @@ public abstract class Bataille
 	protected Joueur[] m_players;
 	protected int m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
+
+	public class PlayerNonNullException extends Exception
+	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
 	/**
 	 * Représente les différents types d'une bataille.
@@ -148,8 +151,12 @@ public abstract class Bataille
 	
 	public abstract TYPE getType();
 
-	public void addPlayer(final PLAYER_N n, final Joueur p)
-	{ m_players[playerToInt(n)] = p; }
+	public void addPlayer(final PLAYER_N n, final Joueur p) throws PlayerNonNullException
+	{ 
+		//Si le joueur a déjà été ajouté il n'est pas normal que cette fonction soit appelée
+		assert(m_players[playerToInt(n)] == null);
+		m_players[playerToInt(n)] = p; 
+	}
 
 	/**
 	 * Retourne l'instance d'un joueur. L'instance que cette fonction retourne n'est pas modifiable

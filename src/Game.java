@@ -4,6 +4,7 @@ import java.util.Scanner;
 import core.*;
 import core.Bataille.MODE;
 import core.Bataille.PLAYER_N;
+import core.Bataille.PlayerNonNullException;
 import core.Bataille.TYPE;
 
 public class Game {
@@ -24,8 +25,10 @@ public class Game {
 			add_player_boat(b, PLAYER_N.ONE);
 			add_player_boat(b, PLAYER_N.TWO);
 		} else {
-			b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-			b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
+			if ((bm.getMode() == Bataille.MODE.UN_JOUEUR) || (bm.getMode() == Bataille.MODE.DEUX_JOUEURS))
+				b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+			if (bm.getMode() == Bataille.MODE.DEUX_JOUEURS)
+				b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 		}
 
 		try {

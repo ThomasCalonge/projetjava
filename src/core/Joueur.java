@@ -11,8 +11,9 @@ import java.util.ArrayList;
 public abstract class Joueur
 {
 	private String m_name; //Nom du joueur
-	private ArrayList<Bateau> m_boats; //Bateaux du joueur
 	private ArrayList<AttackData> m_attaque_data; //Attaques du joueur
+
+	protected ArrayList<Bateau> m_boats; //Bateaux du joueur
 
 	/**
 	 * Construit un joueur à partir du nom que l'on veut lui donner.
@@ -31,10 +32,7 @@ public abstract class Joueur
 
 	public String getName() { return m_name; }
 
-	public void placeBoat(final Bateau b)
-	{
-		m_boats.add(b);
-	}
+	abstract public void placeBoat(final Bateau b);
 	
 	/**
 	 * Fonction appelée lorsque le joueur se fait attaquer
