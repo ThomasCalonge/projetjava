@@ -112,4 +112,9 @@ public class HumanCmdPlayer extends Joueur {
 
 		}
 	}
+
+	@Override
+	public TYPE getType() {
+		return TYPE.HUMAIN;
+	}
 }

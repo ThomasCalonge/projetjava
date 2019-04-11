@@ -15,6 +15,11 @@ public abstract class Joueur
 
 	protected ArrayList<Bateau> m_boats; //Bateaux du joueur
 
+	public enum TYPE
+	{
+		HUMAIN, IA
+	}
+
 	/**
 	 * Construit un joueur à partir du nom que l'on veut lui donner.
 	 * Le nom est copié.
@@ -33,6 +38,7 @@ public abstract class Joueur
 	public String getName() { return m_name; }
 
 	abstract public void placeBoat(final Bateau b);
+	abstract public TYPE getType();
 	
 	/**
 	 * Fonction appelée lorsque le joueur se fait attaquer

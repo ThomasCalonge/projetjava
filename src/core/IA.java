@@ -9,14 +9,13 @@ class Couple {
 }
 
 public class IA extends Joueur {
-
+	static int ia_count = 0;
 	public enum DIFFICULTE {
 		FACILE, NORMAL, DUR,
 	}
 
 	public IA(DIFFICULTE difficulte) {
-		super("IA");
-
+		super("IA" + (++ia_count));
 	}
 
 	private DIFFICULTE m_mode;
@@ -141,6 +140,11 @@ public class IA extends Joueur {
 		//C'est une erreur du programmeur et non de l'utilisateur donc on utilise une assertion
 		//plutôt qu'une exception
 		assert(false);
+	}
+
+	@Override
+	public TYPE getType() {
+		return TYPE.IA;
 	}
 
 }

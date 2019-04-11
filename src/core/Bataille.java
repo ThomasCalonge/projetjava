@@ -18,7 +18,7 @@ public abstract class Bataille
 	protected int m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
 
-	public class PlayerNonNullException extends Exception
+	public class AttackPosNotInRange extends Exception
 	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
 	/**
@@ -184,8 +184,11 @@ public abstract class Bataille
 	public boolean canContinue() 
 	{ return (!playerWins(0)) && (!playerWins(1)); }
 
-	public ATTAQUE_STATUS playerAttack(final Position pos) 
+	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
 	{
+		if (!posInRange(pos))
+			throw new AttackPosNotInRange();
+			
 		final ATTAQUE_STATUS s = (m_current_attacking_player == 0) ? player_one_attacke_player_two(pos) : player_two_attacke_player_one(pos);
 		final AttackData     d = new AttackData(pos,s);
 		
@@ -220,6 +223,12 @@ public abstract class Bataille
 	/** Renvoie true si l'attaque qui vient d'être effectuer à touché un bateau adverse, false sinon */
 	private boolean attackTouche()
 	{ return m_current_attack_data[m_current_attacking_player].status != ATTAQUE_STATUS.EAU; }
+
+	private boolean posInRange(Position pos)
+	{ return intInRange(pos.x) && intInRange(pos.y); }
+
+	private boolean intInRange(final int v)
+	{ return (v >= 0) && (v < 10); }
 	
 	/**  
 	 * Ces deux fonctions font s'attaquer les joueurs. Elles prennent en paramètre la position à laquelle
