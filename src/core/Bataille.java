@@ -18,6 +18,9 @@ public abstract class Bataille
 	protected int m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
 
+	private int m_winner;
+	private boolean m_continue;
+
 	public class AttackPosNotInRange extends Exception
 	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
@@ -125,6 +128,9 @@ public abstract class Bataille
 		m_players = new Joueur[2];
 		m_current_attacking_player = 0;
 		m_current_attack_data = new AttackData[2];
+
+		m_winner = 0;
+		m_continue = true;
 	}
 	
 	/**
@@ -187,12 +193,14 @@ public abstract class Bataille
 	 * @param p le joueur que l'on veut ajouter
 	 * @throws PlayerAlreadyCreated Un joueur est déjà présent
 	 */
-	public void addPlayer(final PLAYER_N n, final Joueur p) throws PlayerAlreadyCreated
+	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ 
 		if (m_players[playerToInt(n)] != null)
-			throw new PlayerAlreadyCreated();
-		else
-			m_players[playerToInt(n)] = p; 
+		{
+			System.err.println("Bataille.addPlayer : Un joueur est déjà présent à la position " + playerToInt(n));
+			System.exit(-1);
+		}
+		m_players[playerToInt(n)] = p; 
 	}
 
 	/**
@@ -231,6 +239,16 @@ public abstract class Bataille
 	 * La bataille peut continuer tant qu'aucun des deux joueurs n'a gagné
 	 * @return 	true si la bataille peut continuer, false sinon
 	 */
+	public Joueur getWinner ()
+	{
+		if (m_continue)
+		{
+			System.err.println("Bataille.switchAttackingPlayer : Impossible d'avoir un vainqueur tant que la partie n'est pas finie");
+			System.exit(-1);
+		}
+		return m_players[m_winner];
+	}
+
 	public boolean canContinue() 
 	{ return (!playerWins(0)) && (!playerWins(1)); }
 	
@@ -242,9 +260,17 @@ public abstract class Bataille
 	 * @param pos La position à laquelle attaquer
 	 * @return le résultat de l'attaque
 	 */
-	public ATTAQUE_STATUS playerAttack(final Position pos) 
+
+	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
 	{
-		assert(posInRange(pos));
+		if (m_players[m_current_attacking_player] == null)
+		{
+			System.err.println("playerAttack : Pas de joueur " + m_current_attacking_player);
+			System.exit(-1);
+		}
+
+		if (!posInRange(pos))
+			throw new AttackPosNotInRange();
 			
 		final ATTAQUE_STATUS s = (m_current_attacking_player == 0) ? player_one_attacke_player_two(pos) : player_two_attacke_player_one(pos);
 		final AttackData     d = new AttackData(pos,s);
