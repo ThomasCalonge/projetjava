@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Elle fournit une interface ainsi qu'une fonction abstraite {@linkplain core.Bataille#getType() <b>getType</b>}
  * qui permet récupérer le type d'une bataille.
  * 
- * Enfin elle déclare plusieurs énumération afin de faciliter et d'encapsuler certaind élément
+ * Enfin elle déclare plusieurs énumérations afin de faciliter et d'encapsuler certaind élément
  * nécessaire à la description d'une bataille: le type, le mode de jeux et
  * une énumération pour accéder à un numéro de joueur.
  */
@@ -103,13 +103,29 @@ public abstract class Bataille
 		{ return (n == PLAYER_N.ONE) ? "1" : "2"; }
 	}
 	
+	/**
+	 * Construit une bataille
+	 * 
+	 * @param mode le {@linkplain core.Bataille.MODE <b>mode</b>} voulu pour la bataille 
+	 */
 	public Bataille(final MODE mode)
 	{
 		m_players = new Joueur[2];
 		m_current_attacking_player = 0;
 		m_current_attack_data = new AttackData[2];
 	}
-
+	
+	/**
+	 * Retourne une matrice de taille 10x10 représentant la grille sur laquel le joueur a placée ses bateaux.
+	 * Chaque case de la matrice contient un nombre pour représenter ce qu'elle contient :
+	 * <ul>
+	 * 		<li> 0 = eau</li>
+	 * 		<li> 1 = partie d'un bateau non endomagée</li>
+	 * 		<li> 2 = partie d'un bateau endomagée</li>
+	 * </ul>
+	 * @param n le joueur pour lequel on veut retourner la matrice
+	 * @return matrice de taille 10*10 contenant les informations sur la grille du joueur
+	 */
 	public int[][] getBoatsMatrice(final PLAYER_N n)
 	{
 		int[][] matrice = new int[10][10];
@@ -146,8 +162,12 @@ public abstract class Bataille
 		return matrice;
 	}
 	
+	/**
+	 * Fonction abstraite qui retourne le {@linkplain core.Bataille.TYPE <b>type</b>} d'une bataille
+	 * @return type de la bataille
+	 */
 	public abstract TYPE getType();
-
+	
 	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ m_players[playerToInt(n)] = p; }
 
