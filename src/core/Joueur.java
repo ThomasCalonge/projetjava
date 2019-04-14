@@ -5,8 +5,6 @@ import java.util.ArrayList;
 /**
  * Représente la classe de Base pour tous les joueurs.
  * Un joueur est caractérisé par son nom, une liste de ses bateaux et une liste de ses attaques
- * @author adrien
- *
  */
 public abstract class Joueur
 {
