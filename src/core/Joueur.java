@@ -19,7 +19,7 @@ public abstract class Joueur
 	}
 
 	/**
-	 * Construit un joueur à partir du nom que l'on veut lui donner.
+	 * Constructeur.
 	 * Le nom est copié.
 	 * 
 	 * @param name nom du joueur
@@ -31,12 +31,36 @@ public abstract class Joueur
 		m_attackDatas = new ArrayList<AttackData>();
 	}
 	
+	/**
+	 * Retourne la liste des bateaux du joueurs
+	 * @return bateaux du joueur
+	 */
 	public ArrayList<Bateau> getBoatsList() { return m_boats; }
 
+	/**
+	 * Retourne le nom du joueur
+	 * @return nom du joueur
+	 */
 	public String getName() { return m_name; }
 	
+	/**
+	 * Ajoute un bateau à la liste des bateaux du joueurs
+	 * @param b bateau à ajouter
+	 */
 	abstract public void placeBoat(final Bateau b);
+
+	/**
+	 * Retourne le {@linkplain core.Joueur.TYPE <b>type</b>} du joueur
+	 * @return type du joueur
+	 */
 	abstract public TYPE getType();
+
+	/**
+	 * Fonction abstraite qui indique comment le joueur doit choisir les coordonnées de l'attaque.
+	 * Le choix des coordonnées se fait en fonction du type de la bataille
+	 * @param type le type de la bataille
+	 * @return les coordonnées de l'attaque
+	 */
 	public abstract Position getAttackPos(Bataille.TYPE type);
 	
 	/**
