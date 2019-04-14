@@ -47,18 +47,20 @@ public class Game {
 				case UN_JOUEUR:
 				{
 					create_player(b, PLAYER_N.ONE);
-					b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
+					b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.DUR));
+
+					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
 				} break;
 
 				case DEUX_JOUEURS:
 				{
 					create_player(b, PLAYER_N.ONE);
 					create_player(b, PLAYER_N.TWO);
+
+					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+					b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 				} break;
-			}
-			
-			b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-			b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
+			}	
 		}
 	}
 
@@ -128,7 +130,7 @@ public class Game {
 			}
 		}
 
-		System.out.println("Victoire de " + b.getWinner().getName());
+		System.out.println(" * Gagné *");
 	}
 
 	private static void create_player(final Bataille b, final Bataille.PLAYER_N n) {

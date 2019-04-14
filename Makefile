@@ -20,7 +20,7 @@ doc:
 	javadoc -classpath ./bin -sourcepath ./src -protected -d ./docs -html5 core gui src/*.java
 
 run:
-	java -classpath bin Game
+	@cd bin; java Game
 
 clean:
 	rm bin/*.class

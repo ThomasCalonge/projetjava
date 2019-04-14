@@ -18,9 +18,6 @@ public abstract class Bataille
 	protected int m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
 
-	private int m_winner;
-	private boolean m_continue;
-
 	public class AttackPosNotInRange extends Exception
 	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
@@ -128,8 +125,6 @@ public abstract class Bataille
 		m_players = new Joueur[2];
 		m_current_attacking_player = 0;
 		m_current_attack_data = new AttackData[2];
-		m_winner = 0;
-		m_continue = true;
 	}
 	
 	/**
@@ -332,11 +327,10 @@ public abstract class Bataille
 	 * Cette fonction permet de savoir si un joueur à gagné ou pas.
 	 * Un joueur a gagné si tous les bateaux adverses ont été coulé
 	 */
-	private boolean playerWin(final int p)
+	private boolean playerWins(final int p)
 	{
 		boolean ret = true;
-		m_winner = p;
-		for (Bateau b: m_players[(p + 1)%2].getBoatsList())
+		for (Bateau b: m_players[p].getBoatsList())
 		{
 			if (!b.isDestroyed())
 			{
