@@ -21,7 +21,6 @@ public class HumanCmdPlayer extends Joueur {
 		super(name);
 
 		m_sc = sc;
-		initFrame();
 	}
 
 	private static void initFrame() {
@@ -68,7 +67,10 @@ public class HumanCmdPlayer extends Joueur {
 	public void placeBoat(Bateau b) 
 	{ m_boats.add(b); }
 
-	private Position getHalfCmdPos() throws InterruptedException {
+	private Position getHalfCmdPos() throws InterruptedException 
+	{
+		initFrame();
+
 		System.out.println("Entrer les coordonnée de l'attaque: ");
 		System.out.print("x");
 		cont = true;

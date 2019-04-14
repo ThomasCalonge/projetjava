@@ -47,20 +47,18 @@ public class Game {
 				case UN_JOUEUR:
 				{
 					create_player(b, PLAYER_N.ONE);
-					b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.DUR));
-
-					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+					b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
 				} break;
 
 				case DEUX_JOUEURS:
 				{
 					create_player(b, PLAYER_N.ONE);
 					create_player(b, PLAYER_N.TWO);
-
-					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-					b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 				} break;
-			}	
+			}
+			
+			b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+			b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 		}
 	}
 
@@ -104,7 +102,7 @@ public class Game {
 			{
 				if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
 				{
-					if (b.getType() == Bataille.TYPE.RADAR) {
+					if ((b.getType() == Bataille.TYPE.RADAR) ||(b.getType() == Bataille.TYPE.ALERTE_ROUGE)) {
 						System.out.println("Bateau le plus proche: " + ((Radar) b).radar_reponse(attackPos));
 					}
 				}
@@ -130,7 +128,7 @@ public class Game {
 			}
 		}
 
-		System.out.println(" * Gagné *");
+		System.out.println("Victoire de " + b.getWinner().getName());
 	}
 
 	private static void create_player(final Bataille b, final Bataille.PLAYER_N n) {
