@@ -22,6 +22,15 @@ public abstract class Bataille
 	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
 	/**
+	 * Exception générée lorsque l'on ajoute un joueur qui a déjà été ajouté.
+	 * Par exemple s'il y a déjà un joueur 1 dans la bataille, ajouter à nouveau un joueur 1 génèrera cette exception
+	 */
+	public class PlayerAlreadyCreated extends Exception
+	{
+		private static final long serialVersionUID = -966878472922943390L;
+	}
+	
+	/**
 	 * Représente les différents types d'une bataille.
 	 * Les types vont influencer la façon de saisir les coordonnées et la façon d'attaquer
 	 */
@@ -171,11 +180,19 @@ public abstract class Bataille
 	 */
 	public abstract TYPE getType();
 	
-	public void addPlayer(final PLAYER_N n, final Joueur p)
+	/**
+	 * Ajoute un joueur à la bataille. Si le joueur a déjà été ajouté, alors le joueur que l'on tente d'ajouter
+	 * n'est pas ajouté et une exception de type {@linkplain core.Bataille.PlayerAlreadyCreated <b>PlayerAlreadyCreated</b>} est générée
+	 * @param n quel joueur on veut ajouter (le joueur 1 ou le 2) ({@linkplain core.Bataille.PLAYER_N})
+	 * @param p le joueur que l'on veut ajouter
+	 * @throws PlayerAlreadyCreated Un joueur est déjà présent
+	 */
+	public void addPlayer(final PLAYER_N n, final Joueur p) throws PlayerAlreadyCreated
 	{ 
-		//Si le joueur a déjà été ajouté il n'est pas normal que cette fonction soit appelée
-		assert(m_players[playerToInt(n)] == null);
-		m_players[playerToInt(n)] = p; 
+		if (m_players[playerToInt(n)] != null)
+			throw new PlayerAlreadyCreated();
+		else
+			m_players[playerToInt(n)] = p; 
 	}
 
 	/**
@@ -195,19 +212,39 @@ public abstract class Bataille
 	public final Joueur getCurrentAttackingPlayer()
 	{ return m_players[m_current_attacking_player]; }
 	
+	/**
+	 * Permet de placer le bateau d'un joueur. Cette fonction appelle simplement la fonction {@linkplain core.Joueur#placeBoat(Bateau) <b>placeBoat</p>} du joueur sélectionné 
+	 * @param n le numéro du joueur pour lequel on veut placer un bateau
+	 * @param b le bateau a ajouter
+	 */
 	public void placePlayerBoat(final PLAYER_N n, final Bateau b)
 	{ m_players[playerToInt(n)].placeBoat(b); }
-
+	
+	/**
+	 * Permet de faire attaquer le joueur suivant. Cette fonction doit être appelée une fois le tour d'un joueur fini
+	 */
 	public void switchAttackingPlayer()
 	{ m_current_attacking_player = ++m_current_attacking_player % 2; }
 
+	/**
+	 * Cette fonction permet de savoir si la bataille peut continuer ou pas.
+	 * La bataille peut continuer tant qu'aucun des deux joueurs n'a gagné
+	 * @return 	true si la bataille peut continuer, false sinon
+	 */
 	public boolean canContinue() 
 	{ return (!playerWins(0)) && (!playerWins(1)); }
-
-	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
+	
+	///TODO: assert ou exception si !posInRange(pos)?
+	/**
+	 * Fonction appelée une fois que le joueur a choisis ses coordonnées d'attaque. Le résultat de l'attaque 
+	 * (touché, coulé ou dans l'au) (voir: {@linkplain core.ATTAQUE_STATUS})
+	 * est donné comme valeure de retour de la fonction.
+	 * @param pos La position à laquelle attaquer
+	 * @return le résultat de l'attaque
+	 */
+	public ATTAQUE_STATUS playerAttack(final Position pos) 
 	{
-		if (!posInRange(pos))
-			throw new AttackPosNotInRange();
+		assert(posInRange(pos));
 			
 		final ATTAQUE_STATUS s = (m_current_attacking_player == 0) ? player_one_attacke_player_two(pos) : player_two_attacke_player_one(pos);
 		final AttackData     d = new AttackData(pos,s);
@@ -218,6 +255,10 @@ public abstract class Bataille
 		return s;
 	}
 	
+	/**
+	 * Cette fonction permet de savoir si le joueur dont c'est le tour d'attaquer peut encore attaquer
+	 * @return true si le joueur peut encore attaquer, false sinon
+	 */
 	public boolean attacking_player_can_reattack() 
 	{	
 		final boolean cond1 = attackTouche();

@@ -17,9 +17,9 @@ public class Game {
 
 		Bataille b = bm.create();
 
-		init_player(b, bm);
 
 		try {
+			init_player(b, bm);
 			play(b);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -28,7 +28,7 @@ public class Game {
 		sc.close();
 	}
 
-	private static void init_player(Bataille b, final BatailleManager bm)
+	private static void init_player(Bataille b, final BatailleManager bm) throws Exception
 	{
 		if (false) {
 			add_player_boat(b, PLAYER_N.ONE);
@@ -104,7 +104,7 @@ public class Game {
 			{
 				if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
 				{
-					if (b.getType() == Bataille.TYPE.RADAR) {
+					if ((b.getType() == Bataille.TYPE.RADAR) || (b.getType() == Bataille.TYPE.ALERTE_ROUGE)) {
 						System.out.println("Bateau le plus proche: " + ((Radar) b).radar_reponse(attackPos));
 					}
 				}
