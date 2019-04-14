@@ -94,7 +94,7 @@ public class Game {
 			System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
 			print(b.getCurrentAttackingPlayer().getBoatsList());
 			System.out.println("*-------------------------------*");
-			printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
+			printAttaqueData(b.getCurrentAttackingPlayer().getAttackDatas());
 			Position attackPos = b.getCurrentAttackingPlayer().getAttackPos(b.getType());
 
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
