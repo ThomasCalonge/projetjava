@@ -160,7 +160,7 @@ public abstract class Bataille
 	{
 		if (m_players[playerToInt(n)] != null)
 		{
-			System.err.println("Un joueur est déjà présent à la position " + playerToInt(n));
+			System.err.println("Bataille.addPlayer : Un joueur est déjà présent à la position " + playerToInt(n));
 			System.exit(-1);
 		}
 		m_players[playerToInt(n)] = p; 
@@ -198,7 +198,7 @@ public abstract class Bataille
 	{
 		if (m_continue)
 		{
-			System.err.println("Impossible d'avoir un vainqueur tant que la partie n'est pas finie");
+			System.err.println("Bataille.switchAttackingPlayer : Impossible d'avoir un vainqueur tant que la partie n'est pas finie");
 			System.exit(-1);
 		}
 		return m_players[m_winner];
@@ -219,6 +219,12 @@ public abstract class Bataille
 
 	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
 	{
+		if (m_players[m_current_attacking_player] == null)
+		{
+			System.err.println("playerAttack : Pas de joueur " + m_current_attacking_player);
+			System.exit(-1);
+		}
+
 		if (!posInRange(pos))
 			throw new AttackPosNotInRange();
 			
