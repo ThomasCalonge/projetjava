@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Implémente le mode artillerie
+ */
 public class Artillerie extends Bataille {
 
 	public Artillerie(final MODE mode) {

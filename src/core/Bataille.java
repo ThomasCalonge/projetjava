@@ -191,7 +191,6 @@ public abstract class Bataille
 	 * n'est pas ajouté et une exception de type {@linkplain core.Bataille.PlayerAlreadyCreated <b>PlayerAlreadyCreated</b>} est générée
 	 * @param n quel joueur on veut ajouter (le joueur 1 ou le 2) ({@linkplain core.Bataille.PLAYER_N})
 	 * @param p le joueur que l'on veut ajouter
-	 * @throws PlayerAlreadyCreated Un joueur est déjà présent
 	 */
 	public void addPlayer(final PLAYER_N n, final Joueur p)
 	{ 
@@ -259,6 +258,7 @@ public abstract class Bataille
 	 * est donné comme valeure de retour de la fonction.
 	 * @param pos La position à laquelle attaquer
 	 * @return le résultat de l'attaque
+	 * @throws AttackPosNotInRange les coordonnées de l'attaque ne sont pas dans la grille
 	 */
 
 	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
