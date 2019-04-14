@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * 
+ */
 public class Bateau
 {
 	public TYPE type;
@@ -16,7 +19,7 @@ public class Bateau
 		CUIRASSE,
 		ZODIAC;
 		
-		static public int toInt (final TYPE t)
+		static public int size (final TYPE t)
 	    {
 	        int ret = 0;
 	        switch (t)
@@ -85,7 +88,7 @@ public class Bateau
 
 	public boolean setDamage (final int damage_pos)
 	{
-		if (damage_pos < TYPE.toInt(type))
+		if (damage_pos < TYPE.size(type))
 		{
 			final int oldDamages = m_damages;
 			
@@ -106,7 +109,7 @@ public class Bateau
 	{ return ((m_damages & (1 << damage_pos)) >> damage_pos) == 1; }
 	
 	public boolean isDestroyed ()
-	{ return m_totalDamages >= TYPE.toInt(type); }
+	{ return m_totalDamages >= TYPE.size(type); }
 
-	public int getSize() { return TYPE.toInt(type); }
+	public int getSize() { return TYPE.size(type); }
 }

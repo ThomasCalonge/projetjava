@@ -41,13 +41,13 @@ public class IA extends Joueur {
 				for (Bateau b : bateau_ennemi) {
 					if (b.o == ORIENTATION.H) {
 						if (y == b.pos.y) {
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type))) {
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.size(b.type))) {
 								matrice[x][y] = 1;
 							}
 						}
 					} else {
 						if (x == b.pos.x) {
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type))) {
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.size(b.type))) {
 								matrice[x][y] = 1;
 							}
 						}

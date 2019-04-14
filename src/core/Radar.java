@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Implémente le mode Radar d'une bataille Navale
+ */
 public class Radar extends Bataille {
 
 	public Radar(final MODE mode) {

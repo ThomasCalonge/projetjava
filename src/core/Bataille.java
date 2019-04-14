@@ -154,7 +154,7 @@ public abstract class Bataille
 					{
 						if (y == b.pos.y)
 						{
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type)))
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.size(b.type)))
 								value = b.getDamage(x - b.pos.x) ? 2 : 1;
 						}
 					}
@@ -162,7 +162,7 @@ public abstract class Bataille
 					{
 						if (x == b.pos.x)
 						{
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type)))
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.size(b.type)))
 								value = b.getDamage(y - b.pos.y) ? 2 : 1;
 						}
 					}
@@ -213,7 +213,7 @@ public abstract class Bataille
 	{ return m_players[m_current_attacking_player]; }
 	
 	/**
-	 * Permet de placer le bateau d'un joueur. Cette fonction appelle simplement la fonction {@linkplain core.Joueur#placeBoat(Bateau) <b>placeBoat</p>} du joueur sélectionné 
+	 * Permet de placer le bateau d'un joueur. Cette fonction appelle simplement la fonction {@linkplain core.Joueur#placeBoat(Bateau) <b>placeBoat</b>} du joueur sélectionné 
 	 * @param n le numéro du joueur pour lequel on veut placer un bateau
 	 * @param b le bateau a ajouter
 	 */
