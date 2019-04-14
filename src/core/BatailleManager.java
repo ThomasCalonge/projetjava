@@ -7,6 +7,10 @@ public class BatailleManager
 	
 	public void setType (final Bataille.TYPE type) { m_type = type; }
 	public void setMode (final Bataille.MODE mode) { m_mode = mode; }
+
+	public Bataille.TYPE getType() { return m_type; }
+	public Bataille.MODE getMode() { return m_mode; }
+
 	public Bataille create () 
 	{
 		switch(m_type)

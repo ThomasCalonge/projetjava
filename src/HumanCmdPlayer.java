@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Scanner;
@@ -7,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import core.Bataille;
+import core.Bateau;
 import core.Joueur;
 import core.Position;
 
@@ -28,8 +28,7 @@ public class HumanCmdPlayer extends Joueur {
 		if (!init) {
 			frame = new JFrame("Sélection de y");
 			frame.add(new JLabel(
-					"Veuillez regarder la console de jeu. \nAppuyez sur une touche pour valider la coordonnée y"),
-					BorderLayout.SOUTH);
+					"Veuillez regarder la console de jeu. \nAppuyez sur une touche pour valider la coordonnée y"));
 			frame.pack();
 			frame.setEnabled(false);
 			frame.setResizable(false);
@@ -64,6 +63,10 @@ public class HumanCmdPlayer extends Joueur {
 
 		return new Position(x, y);
 	}
+
+	@Override
+	public void placeBoat(Bateau b) 
+	{ m_boats.add(b); }
 
 	private Position getHalfCmdPos() throws InterruptedException {
 		System.out.println("Entrer les coordonnée de l'attaque: ");
@@ -108,6 +111,10 @@ public class HumanCmdPlayer extends Joueur {
 		public void keyReleased(KeyEvent e) {
 
 		}
+	}
 
+	@Override
+	public TYPE getType() {
+		return TYPE.HUMAIN;
 	}
 }
