@@ -18,6 +18,9 @@ public abstract class Bataille
 	protected int m_current_attacking_player;
 	protected AttackData [] m_current_attack_data;
 
+	private int m_winner;
+	private boolean m_continue;
+
 	public class AttackPosNotInRange extends Exception
 	{ private static final long serialVersionUID = 5276583181437585740L; }
 	
@@ -111,6 +114,8 @@ public abstract class Bataille
 		m_players = new Joueur[2];
 		m_current_attacking_player = 0;
 		m_current_attack_data = new AttackData[2];
+		m_winner = 0;
+		m_continue = true;
 	}
 
 	public int[][] getBoatsMatrice(final PLAYER_N n)
@@ -152,9 +157,12 @@ public abstract class Bataille
 	public abstract TYPE getType();
 
 	public void addPlayer(final PLAYER_N n, final Joueur p)
-	{ 
-		//Si le joueur a déjà été ajouté il n'est pas normal que cette fonction soit appelée
-		assert(m_players[playerToInt(n)] == null);
+	{
+		if (m_players[playerToInt(n)] != null)
+		{
+			System.err.println("Un joueur est déjà présent à la position " + playerToInt(n));
+			System.exit(-1);
+		}
 		m_players[playerToInt(n)] = p; 
 	}
 
@@ -176,13 +184,38 @@ public abstract class Bataille
 	{ return m_players[m_current_attacking_player]; }
 	
 	public void placePlayerBoat(final PLAYER_N n, final Bateau b)
-	{ m_players[playerToInt(n)].placeBoat(b); }
+	{
+		if (m_players[playerToInt(n)].getType() == Joueur.TYPE.HUMAIN)
+			m_players[playerToInt(n)].placeBoat(b); 
+		else
+			System.out.println("Appeler \"core.Bataille.placePlayerBoat\" sur un joueur non humain ne fait rien");
+	}
 
 	public void switchAttackingPlayer()
 	{ m_current_attacking_player = ++m_current_attacking_player % 2; }
 
+	public Joueur getWinner ()
+	{
+		if (m_continue)
+		{
+			System.err.println("Impossible d'avoir un vainqueur tant que la partie n'est pas finie");
+			System.exit(-1);
+		}
+		return m_players[m_winner];
+	}
+
 	public boolean canContinue() 
-	{ return (!playerWins(0)) && (!playerWins(1)); }
+	{
+		//On est obligé de tester si chaque fonction renvoie true car elle modifie la variable m_winner
+		//en lui assignant la valeur du joueur qui l'appelle
+		//Si on faiait simplement return playerWins(0) && playerWins(1) alors m_winner vaudrait toujours 1
+		m_continue = !playerWin(0);
+
+		if (m_continue)
+			m_continue = !playerWin(1);
+
+		return m_continue; 
+	}
 
 	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
 	{
@@ -266,10 +299,11 @@ public abstract class Bataille
 	 * Cette fonction permet de savoir si un joueur à gagné ou pas.
 	 * Un joueur a gagné si tous les bateaux adverses ont été coulé
 	 */
-	private boolean playerWins(final int p)
+	private boolean playerWin(final int p)
 	{
 		boolean ret = true;
-		for (Bateau b: m_players[p].getBoatsList())
+		m_winner = p;
+		for (Bateau b: m_players[(p + 1)%2].getBoatsList())
 		{
 			if (!b.isDestroyed())
 			{

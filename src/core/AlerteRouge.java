@@ -1,6 +1,6 @@
 package core;
 
-public class AlerteRouge extends Bataille {
+public class AlerteRouge extends Radar {
 
 	public AlerteRouge(final MODE mode) {
 		super(mode);
