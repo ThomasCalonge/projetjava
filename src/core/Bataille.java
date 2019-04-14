@@ -232,7 +232,7 @@ public abstract class Bataille
 		final AttackData     d = new AttackData(pos,s);
 		
 		m_current_players_attack_datas[m_current_attacking_player] = d;
-		m_players[m_current_attacking_player].pushAttaqueData(d);
+		m_players[m_current_attacking_player].pushAttackData(d);
 		
 		return s;
 	}
@@ -286,7 +286,7 @@ public abstract class Bataille
 	 */
 	private boolean firstTimeAttack()
 	{	
-		final ArrayList<AttackData> attacking_player_attack_datas = m_players[m_current_attacking_player].getAttaqueData();
+		final ArrayList<AttackData> attacking_player_attack_datas = m_players[m_current_attacking_player].getAttackDatas();
 		final AttackData attacking_player_current_attack_data = m_current_players_attack_datas[m_current_attacking_player];
 		
 		// Si l'attaque courrante est aux mêmes coordonnées qu'une des autre attaque du joueur

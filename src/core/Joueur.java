@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public abstract class Joueur
 {
 	private String m_name; //Nom du joueur
-	private ArrayList<AttackData> m_attaque_data; //Attaques du joueur
+	private ArrayList<AttackData> m_attackDatas; //Attaques du joueur
 
 	protected ArrayList<Bateau> m_boats; //Bateaux du joueur
 
@@ -30,15 +30,16 @@ public abstract class Joueur
 	{
 		m_name = new String(name);
 		m_boats = new ArrayList<Bateau>();
-		m_attaque_data = new ArrayList<AttackData>();
+		m_attackDatas = new ArrayList<AttackData>();
 	}
 	
 	public ArrayList<Bateau> getBoatsList() { return m_boats; }
 
 	public String getName() { return m_name; }
-
+	
 	abstract public void placeBoat(final Bateau b);
 	abstract public TYPE getType();
+	public abstract Position getAttackPos(Bataille.TYPE type);
 	
 	/**
 	 * Fonction appelée lorsque le joueur se fait attaquer
@@ -82,10 +83,9 @@ public abstract class Joueur
 	 * 
 	 * @param data les données à être introduite
 	 */
-	public void pushAttaqueData (final AttackData data) { m_attaque_data.add(data); }
-	public ArrayList<AttackData> getAttaqueData () { return m_attaque_data; }
+	public void pushAttackData (final AttackData data) { m_attackDatas.add(data); }
+	public ArrayList<AttackData> getAttackDatas () { return m_attackDatas; }
 
-	public abstract Position getAttackPos(Bataille.TYPE type);
 	
 	/// Fonctions interne à la classe
 	
