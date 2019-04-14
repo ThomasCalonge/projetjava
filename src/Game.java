@@ -47,7 +47,7 @@ public class Game {
 				case UN_JOUEUR:
 				{
 					create_player(b, PLAYER_N.ONE);
-					b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.DUR));
+					b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
 
 					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
 				} break;
