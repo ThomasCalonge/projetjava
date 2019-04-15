@@ -3,19 +3,32 @@ package core;
 import java.util.ArrayList;
 import java.lang.Math;
 
+// J'ai donc besoin d'un couple pour faire une liste de couples puisque qu'on
+// est sur un tableau 2D.
 class Couple {
 	public int a;
 	public int b;
 }
 
 public class IA extends Joueur {
-	static int ia_count = 0;
+	static private int ia_count = 0;
 	public enum DIFFICULTE {
 		FACILE, NORMAL, DUR,
 	}
 
-	public IA(DIFFICULTE difficulte) {
+	// Je crée deux listes afin d'ajouter dans la liste pos_vide les positions dans
+	// l'eau
+	// et dans la liste pos_pleine les position avec bateaux
+	// Adrien: J'ai déplacé les tableaux ici sinon la fonction pick_pos ne les voyait pas.
+	// plus je les ai passé en privés et mis l'initialisation dans le constructeur de la classe (c'est plus dans l'esprit de la POO)
+	private ArrayList<Couple> pos_vide;
+	private ArrayList<Couple> pos_pleine;
+
+	public IA(DIFFICULTE difficulte) 
+	{
 		super("IA" + (++ia_count));
+		pos_vide = new ArrayList<Couple>();
+		pos_pleine = new ArrayList<Couple>();
 	}
 
 	private DIFFICULTE m_mode;
@@ -27,27 +40,22 @@ public class IA extends Joueur {
 	public Couple pick_pos(ArrayList<Couple> position) {
 		int taille_tab = position.size();
 		int k = (int) (Math.random() * taille_tab);
+		if (pos_pleine.contains(position.get(k)))
+		{ 
+			pos_pleine.remove(position.get(k));
+		}
+		else{ 
+			pos_vide.remove(position.get(k));
+		}
 
 		return position.get(k);
-
 	}
 
 	public void level_ia(final Position pos, ArrayList<Bateau> bateau_ennemi, final DIFFICULTE difficulte) {
 
 		int[][] matrice = Bataille.getBoatsMatrice(this);
 
-		// Je crée deux listes afin d'ajouter dans la liste pos_vide les positions dans
-		// l'eau
-		// et dans la liste pos_pleine les position avec bateaux
-
-		ArrayList<Couple> pos_vide = new ArrayList<Couple>();
-		ArrayList<Couple> pos_pleine = new ArrayList<Couple>();
-
-		// J'ai donc besoin d'un couple pour faire une liste de couples puisque qu'on
-		// est sur un tableau 2D.
-
-		// os_pleine ou pos_vide le type de case que c'est.
-
+		// pos_pleine ou pos_vide le type de case que c'est.
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				Couple c = new Couple();
@@ -60,7 +68,6 @@ public class IA extends Joueur {
 				}
 			}
 		}
-
 		// On va créer la fonction qui choisi une position vide ou plein et qui sera
 		// appelée
 		// selon la difficulté pour ressortir une position choisie de manière random
@@ -106,15 +113,6 @@ public class IA extends Joueur {
 			break;
 		}
 
-		//ça ne marche pas :(
-		/*if (pos_pleine.contains(position.get(k)))
-		{ 
-			pos_pleine.remove(position.get(k));
-			}
-			else{ 
-			pos_vide.remove(position.get(k));
-			}*/
-
 	}
 
 	@Override
@@ -136,5 +134,4 @@ public class IA extends Joueur {
 	public TYPE getType() {
 		return TYPE.IA;
 	}
-
 }
