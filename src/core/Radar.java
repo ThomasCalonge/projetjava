@@ -1,11 +1,24 @@
 package core;
 
+/**
+ * Implémente le mode Radar d'une bataille Navale
+ */
 public class Radar extends Bataille {
 
+	/**
+	 * Constructeur de Radar
+	 * @param mode le mode de la bataille
+	 */
 	public Radar(final MODE mode) {
 		super(mode);
 	}
 
+	/**
+	 * Fonction qui implémente la réponse du radar a une attaque. Elle scanne les positions autour du point d'attaque et retourne la distance
+	 * vers le bateau le plus proche
+	 * @param pos position de l'attaque
+	 * @return distance vers le bateau le plus proche
+	 */
 	public int radar_reponse(final Position pos) {
 		// Il faut l'attaque status et la position lors de l'attaque en argument
 		// Par exemple lorsque l'on tire, et que l'on est en radar si on touche l'eau ça

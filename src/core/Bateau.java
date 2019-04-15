@@ -1,9 +1,9 @@
 package core;
+
 /**
- * Bateau est une classe qui sert pour définir l'objet Bateau dans notre BatailleNavale
- * Elle est composée d'une orientation, d'une position et d'un type}
- * Type étant une énumération, 
- * Il contient aussi deux variables de dégats, permettant de savoir si le bateau à était touché et si il à était coulé
+ * Décris un bateau. Un bateau est caractérisé par un {@linkplain core.Bateau.TYPE <b>type</b>}, une {@linkplain core.ORIENTATION <b>orientation</b>} et une {@linkplain core.Position <b>position</b>}
+ * ainsi qu'un niveau de dommage. Les bateaux sont représentés par différentes parties, chaque partie allant sur une case du plateau de la bataille navale. Une partie peut être endomagée ou pas.
+ * Le bateau est en vie tant que toutes ses parties n'ont pas été touchées sinon il est coulé.
  */
 public class Bateau
 {
@@ -11,17 +11,27 @@ public class Bateau
 	public ORIENTATION o;
 	public Position pos;
 
+	//Partie endomagée ou intactes du bateau
 	private int m_damages;
+	//Dommages totaux du bateau
 	private int m_totalDamages;
 	
+	/**
+	 * Les différents types de bateaux dans une bataille navale.
+	 */
 	public enum TYPE
 	{
-		PORTE_AVION,
-	    SOUS_MARIN,
-		CUIRASSE,
-		ZODIAC;
+		/** A une taille de 5 */ PORTE_AVION,
+	    /** A une taille de 4 */ SOUS_MARIN,
+		/** A une taille de 3 */ CUIRASSE,
+		/** A une taille de 1 */ ZODIAC;
 		
-		static public int toInt (final TYPE t)
+		/**
+		 * Retourne la taille associée à un type de bateau
+		 * @param t le type dont on veut connaître la taille
+		 * @return la taille associée au type
+		 */
+		static public int size (final TYPE t)
 	    {
 	        int ret = 0;
 	        switch (t)
@@ -45,6 +55,11 @@ public class Bateau
 	        return ret;
 	    }
 		
+		/**
+		 * Retourne une chaîne de caractère décrivant un type.
+		 * @param t Le type dont on veut récupérer une chaîne
+		 * @return Une chaîne de caractère décrivant le type
+		 */
 		public static String toString (final TYPE t)
 		{
 			String ret = "";
@@ -88,9 +103,23 @@ public class Bateau
 		m_totalDamages = 0;
 	}
 
+	/**
+	 * Permet de définir une partie du bateau comme endomagée. Pour choisir une partie on indique son numéro. Le numéro d'une partie correspond à sa distance depuis le début du bateau.
+	 * On considère que le début du bateau (et donc sa première partie) se situe au niveau des coordonnées décrit par la position du bateau.
+	 * Par exemple un bateau de taille 10 contient 10 parties numérotée de 0 jusqu'a 9, 0 étant la première partie et 9 étant la dernière. Pour endomager la 5e partie d'un tel bateau,
+	 * on écrira <br>
+	 * {@code setDamage(4); }<br>
+	 * Si les dommages ont pu être appliqués, la fonction retourne vraie, sinon elle retourne faux. Il y a deux conditions pour que les dommages soit appliqués:
+	 * <ol>
+	 * 	<li>La partie que l'on veut toucher est bien dans l'intervalle [0; taille du bateau - 1]</li>
+	 * 	<li>La partie n'a jamais été touchée avant</li>
+	 * </ol>
+	 * @param damage_pos la position de la partie a endomager
+	 * @return vrai si les dommages ont été appliqués, faux sinon
+	 */
 	public boolean setDamage (final int damage_pos)
 	{
-		if (damage_pos < TYPE.toInt(type))
+		if (damage_pos < TYPE.size(type))
 		{
 			final int oldDamages = m_damages;
 			
@@ -107,11 +136,24 @@ public class Bateau
 		return false;
 	}
 
+	/**
+	 * Indique par un booléen si une partie du bateau a été endomagée ou pas. Pour avoir la définition de ce qu'est une partie, voir la documentation de la fonction {@linkplain core.Bateau#setDamage(int) <b>setDamage</b>}
+	 * @param damage_pos la partie du bateau du bateau
+	 * @return vraie si la partie est endomagée, faux sinon
+	 */
 	public boolean getDamage (final int damage_pos)
 	{ return ((m_damages & (1 << damage_pos)) >> damage_pos) == 1; }
 	
+	/**
+	 * Indique si la bateau est détruit ou pas
+	 * @return vrai si le bateau est détruit, faux sinon
+	 */
 	public boolean isDestroyed ()
-	{ return m_totalDamages >= TYPE.toInt(type); }
+	{ return m_totalDamages >= TYPE.size(type); }
 
-	public int getSize() { return TYPE.toInt(type); }
+	/**
+	 * Retourne la taille en nombre de case du bateau
+	 * @return la taille en nombre de case
+	 */
+	public int getSize() { return TYPE.size(type); }
 }

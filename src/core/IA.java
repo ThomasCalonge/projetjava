@@ -128,8 +128,7 @@ public class IA extends Joueur {
 		//Cette fonction ne devrait jamais être appelée depuis le code pour un joueur IA
 		//C'est une erreur du programmeur et non de l'utilisateur donc on utilise une assertion
 		//plutôt qu'une exception
-		System.err.println("\"IA.placeBoat\" ne devrais jamais être appelée");
-		System.exit(-1);
+		assert(false);
 	}
 
 	@Override

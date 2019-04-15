@@ -19,9 +19,9 @@ public class Game {
 
 		Bataille b = bm.create();
 
-		init_player(b, bm);
 
 		try {
+			init_player(b, bm);
 			play(b);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,7 +30,7 @@ public class Game {
 		sc.close();
 	}
 
-	private static void init_player(Bataille b, final BatailleManager bm)
+	private static void init_player(Bataille b, final BatailleManager bm) throws Exception
 	{
 		switch (bm.getMode())
 		{
@@ -39,7 +39,7 @@ public class Game {
 				b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.FACILE));
 				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE));
 			} break;
-
+        
 			case UN_JOUEUR:
 			{
 				create_player(b, PLAYER_N.ONE);
@@ -104,7 +104,7 @@ public class Game {
 			{
 				if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
 				{
-					if ((b.getType() == Bataille.TYPE.RADAR) ||(b.getType() == Bataille.TYPE.ALERTE_ROUGE)) {
+					if ((b.getType() == Bataille.TYPE.RADAR) || (b.getType() == Bataille.TYPE.ALERTE_ROUGE)) {
 						System.out.println("Bateau le plus proche: " + ((Radar) b).radar_reponse(attackPos));
 					}
 				}
@@ -130,7 +130,7 @@ public class Game {
 			}
 		}
 
-		System.out.println("Victoire de " + b.getWinner().getName());
+		System.out.println(" * Gagné *");
 	}
 
 	private static void create_player(final Bataille b, final Bataille.PLAYER_N n) {
@@ -225,13 +225,13 @@ public class Game {
 				for (Bateau b : boats) {
 					if (b.o == ORIENTATION.H) {
 						if (y == b.pos.y) {
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type))) {
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.size(b.type))) {
 								to_print = b.getDamage(x - b.pos.x) ? 'x' : '-';
 							}
 						}
 					} else {
 						if (x == b.pos.x) {
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type))) {
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.size(b.type))) {
 								to_print = b.getDamage(y - b.pos.y) ? 'x' : '|';
 							}
 						}

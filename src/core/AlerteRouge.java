@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Implémente le mode AlerteRouge d'une bataille navale
+ */
 public class AlerteRouge extends Radar {
 
 	public AlerteRouge(final MODE mode) {

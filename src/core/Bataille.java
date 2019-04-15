@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Elle fournit une interface ainsi qu'une fonction abstraite {@linkplain core.Bataille#getType() <b>getType</b>}
  * qui permet récupérer le type d'une bataille.
  * 
- * Enfin elle déclare plusieurs énumération afin de faciliter et d'encapsuler certaind élément
+ * Enfin elle déclare plusieurs énumérations afin de faciliter et d'encapsuler certaind élément
  * nécessaire à la description d'une bataille: le type, le mode de jeux et
  * une énumération pour accéder à un numéro de joueur.
  */
@@ -29,6 +29,15 @@ public abstract class Bataille
 
 	public class BoatPositionNotInGame extends Exception
 	{ private static final long serialVersionUID = 2827550549763410108L; };
+	
+	/**
+	 * Exception générée lorsque l'on ajoute un joueur qui a déjà été ajouté.
+	 * Par exemple s'il y a déjà un joueur 1 dans la bataille, ajouter à nouveau un joueur 1 génèrera cette exception
+	 */
+	public class PlayerAlreadyCreated extends Exception
+	{
+		private static final long serialVersionUID = -966878472922943390L;
+	}
 	
 	/**
 	 * Représente les différents types d'une bataille.
@@ -115,6 +124,11 @@ public abstract class Bataille
 		{ return (n == PLAYER_N.ONE) ? "1" : "2"; }
 	}
 	
+	/**
+	 * Construit une bataille
+	 * 
+	 * @param mode le {@linkplain core.Bataille.MODE <b>mode</b>} voulu pour la bataille 
+	 */
 	public Bataille(final MODE mode)
 	{
 		m_players = new Joueur[2];
@@ -123,6 +137,18 @@ public abstract class Bataille
 		m_winner = 0;
 		m_continue = true;
 	}
+	
+	/**
+	 * Retourne une matrice de taille 10x10 représentant la grille sur laquel le joueur a placée ses bateaux.
+	 * Chaque case de la matrice contient un nombre pour représenter ce qu'elle contient :
+	 * <ul>
+	 * 		<li> 0 = eau</li>
+	 * 		<li> 1 = partie d'un bateau non endomagée</li>
+	 * 		<li> 2 = partie d'un bateau endomagée</li>
+	 * </ul>
+	 * @param p le joueur pour lequel on veut retourner la matrice
+	 * @return matrice de taille 10*10 contenant les informations sur la grille du joueur
+	 */
 
 	public static int[][] getBoatsMatrice(final Joueur p)
 	{
@@ -140,7 +166,7 @@ public abstract class Bataille
 					{
 						if (y == b.pos.y)
 						{
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type)))
+							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.size(b.type)))
 								value = b.getDamage(x - b.pos.x) ? 2 : 1;
 						}
 					}
@@ -148,7 +174,7 @@ public abstract class Bataille
 					{
 						if (x == b.pos.x)
 						{
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type)))
+							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.size(b.type)))
 								value = b.getDamage(y - b.pos.y) ? 2 : 1;
 						}
 					}
@@ -159,14 +185,24 @@ public abstract class Bataille
 
 		return matrice;
 	}
-
+  
 	public int[][] getBoatsMatrice(final PLAYER_N n)
 	{ return getBoatsMatrice(m_players[playerToInt(n)]); }
 	
+	/**
+	 * Fonction abstraite qui retourne le {@linkplain core.Bataille.TYPE <b>type</b>} d'une bataille
+	 * @return type de la bataille
+	 */
 	public abstract TYPE getType();
-
+	
+	/**
+	 * Ajoute un joueur à la bataille. Si le joueur a déjà été ajouté, alors le joueur que l'on tente d'ajouter
+	 * n'est pas ajouté et une exception de type {@linkplain core.Bataille.PlayerAlreadyCreated <b>PlayerAlreadyCreated</b>} est générée
+	 * @param n quel joueur on veut ajouter (le joueur 1 ou le 2) ({@linkplain core.Bataille.PLAYER_N})
+	 * @param p le joueur que l'on veut ajouter
+	 */
 	public void addPlayer(final PLAYER_N n, final Joueur p)
-	{
+	{ 
 		if (m_players[playerToInt(n)] != null)
 		{
 			System.err.println("Bataille.addPlayer : Un joueur est déjà présent à la position " + playerToInt(n));
@@ -192,6 +228,13 @@ public abstract class Bataille
 	public final Joueur getCurrentAttackingPlayer()
 	{ return m_players[m_current_attacking_player]; }
 	
+	/**
+	 * Permet de placer le bateau d'un joueur. Cette fonction appelle simplement la fonction {@linkplain core.Joueur#placeBoat(Bateau) <b>placeBoat</b>} du joueur sélectionné 
+	 * @param n le numéro du joueur pour lequel on veut placer un bateau
+	 * @param b le bateau a ajouter
+	 * @throws BoatPositionOverlaps si le bateau est en collision avec un autre bateau
+	 * @throws BoatPositionNotInGame si le bateau sort de la grille du jeu
+	 */
 	public void placePlayerBoat(final PLAYER_N n, final Bateau b) throws BoatPositionOverlaps,BoatPositionNotInGame
 	{
 		if (m_players[playerToInt(n)].getType() == Joueur.TYPE.HUMAIN)
@@ -207,10 +250,17 @@ public abstract class Bataille
 		else
 			System.out.println("Appeler \"core.Bataille.placePlayerBoat\" sur un joueur non humain ne fait rien");
 	}
-
+  /**
+	 * Permet de faire attaquer le joueur suivant. Cette fonction doit être appelée une fois le tour d'un joueur fini
+	 */
 	public void switchAttackingPlayer()
 	{ m_current_attacking_player = ++m_current_attacking_player % 2; }
 
+	/**
+	 * Cette fonction permet de savoir si la bataille peut continuer ou pas.
+	 * La bataille peut continuer tant qu'aucun des deux joueurs n'a gagné
+	 * @return 	true si la bataille peut continuer, false sinon
+	 */
 	public Joueur getWinner ()
 	{
 		if (m_continue)
@@ -222,17 +272,17 @@ public abstract class Bataille
 	}
 
 	public boolean canContinue() 
-	{
-		//On est obligé de tester si chaque fonction renvoie true car elle modifie la variable m_winner
-		//en lui assignant la valeur du joueur qui l'appelle
-		//Si on faiait simplement return playerWins(0) && playerWins(1) alors m_winner vaudrait toujours 1
-		m_continue = !playerWin(0);
-
-		if (m_continue)
-			m_continue = !playerWin(1);
-
-		return m_continue; 
-	}
+	{ return (!playerWins(0)) && (!playerWins(1)); }
+	
+	///TODO: assert ou exception si !posInRange(pos)?
+	/**
+	 * Fonction appelée une fois que le joueur a choisis ses coordonnées d'attaque. Le résultat de l'attaque 
+	 * (touché, coulé ou dans l'au) (voir: {@linkplain core.ATTAQUE_STATUS})
+	 * est donné comme valeure de retour de la fonction.
+	 * @param pos La position à laquelle attaquer
+	 * @return le résultat de l'attaque
+	 * @throws AttackPosNotInRange les coordonnées de l'attaque ne sont pas dans la grille
+	 */
 
 	public ATTAQUE_STATUS playerAttack(final Position pos) throws AttackPosNotInRange 
 	{
@@ -254,6 +304,10 @@ public abstract class Bataille
 		return s;
 	}
 	
+	/**
+	 * Cette fonction permet de savoir si le joueur dont c'est le tour d'attaquer peut encore attaquer
+	 * @return true si le joueur peut encore attaquer, false sinon
+	 */
 	public boolean attacking_player_can_reattack() 
 	{	
 		final boolean cond1 = attackTouche();
@@ -362,11 +416,10 @@ public abstract class Bataille
 	 * Cette fonction permet de savoir si un joueur à gagné ou pas.
 	 * Un joueur a gagné si tous les bateaux adverses ont été coulé
 	 */
-	private boolean playerWin(final int p)
+	private boolean playerWins(final int p)
 	{
 		boolean ret = true;
-		m_winner = p;
-		for (Bateau b: m_players[(p + 1)%2].getBoatsList())
+		for (Bateau b: m_players[p].getBoatsList())
 		{
 			if (!b.isDestroyed())
 			{
