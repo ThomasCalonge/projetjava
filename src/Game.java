@@ -70,7 +70,7 @@ public class Game {
 	}
 
 	private static Bataille.TYPE select_type() {
-		Helper.printGameFormatted("Choisire un type de bataille:",
+		Helper.printGameFormatted("Choisir un type de bataille:",
 				new String[] { "Navale", "Radar", "Artillerie", "Alerte Rouge" });
 
 		int choice = Helper.choose_int(1, 4, sc);
