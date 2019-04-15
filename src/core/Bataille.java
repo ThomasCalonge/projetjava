@@ -232,6 +232,8 @@ public abstract class Bataille
 	 * Permet de placer le bateau d'un joueur. Cette fonction appelle simplement la fonction {@linkplain core.Joueur#placeBoat(Bateau) <b>placeBoat</b>} du joueur sélectionné 
 	 * @param n le numéro du joueur pour lequel on veut placer un bateau
 	 * @param b le bateau a ajouter
+	 * @throws BoatPositionOverlaps si le bateau est en collision avec un autre bateau
+	 * @throws BoatPositionNotInGame si le bateau sort de la grille du jeu
 	 */
 	public void placePlayerBoat(final PLAYER_N n, final Bateau b) throws BoatPositionOverlaps,BoatPositionNotInGame
 	{
