@@ -70,7 +70,7 @@ public class Game {
 	}
 
 	private static Bataille.TYPE select_type() {
-		Helper.printGameFormatted("Choisire un type de bataille:",
+		Helper.printGameFormatted("Choisir un type de bataille:",
 				new String[] { "Navale", "Radar", "Artillerie", "Alerte Rouge" });
 
 		int choice = Helper.choose_int(1, 4, sc);
@@ -220,7 +220,7 @@ public class Game {
 		for (int y = 0; y < 10; ++y) {
 			System.out.print(y + " ");
 			for (int x = 0; x < 10; ++x) {
-				char to_print = '.';
+				char to_print = '~';
 
 				for (Bateau b : boats) {
 					if (b.o == ORIENTATION.H) {
@@ -246,11 +246,11 @@ public class Game {
 	}
 
 	static void printAttaqueData(final ArrayList<AttackData> datas) {
-		System.out.println("  A B C D E F G H I J");
+		System.out.println("  0 1 2 3 4 5 6 7 8 9");
 		for (int y = 0; y < 10; ++y) {
 			System.out.print(y + " ");
 			for (int x = 0; x < 10; ++x) {
-				char to_print = '.';
+				char to_print = '~';
 				for (AttackData d : datas) {
 					if ((d.pos.x == x) && (d.pos.y == y)) {
 						switch (d.status) {
