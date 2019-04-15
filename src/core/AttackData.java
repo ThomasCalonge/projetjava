@@ -7,8 +7,8 @@ package core;
  */
 public class AttackData
 {
-	public Position pos;
-	public ATTAQUE_STATUS status;
+	/** Position de l'attaque */public Position pos;
+	/** Status de l'attaque */public ATTAQUE_STATUS status;
 	
 	/**
 	 * Constructeur de AttackData. Construit une instance de AttackData
