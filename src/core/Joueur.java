@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 /**
  * Représente la classe de Base pour tous les joueurs.
- * Un joueur est caractérisé par son nom, une liste de ses bateaux et une liste de ses attaques
+ * Un joueur est caractérisé par son nom, une liste de ses bateaux et une liste de ses attaques.
+ * <b>IMPORTANT</b>: la classe n'a aucun moyen de savir si le jeux a lieu dans une interfac graphique, dans une console,
+ * en réseau etc... .Pour l'implémentation des différents mode de tirs via la fonction {@linkplain core.Joueur#getAttackPos(core.Bataille.TYPE) <b>getAttackPos</b>}
+ * doit donc être implémenté par les utilisateurs en fonction de la méthode d'affichage de leur choix. 
  */
 public abstract class Joueur
 {
