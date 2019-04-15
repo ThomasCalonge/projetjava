@@ -124,10 +124,10 @@ public abstract class Bataille
 		m_continue = true;
 	}
 
-	public int[][] getBoatsMatrice(final PLAYER_N n)
+	public static int[][] getBoatsMatrice(final Joueur p)
 	{
 		int[][] matrice = new int[10][10];
-		ArrayList<Bateau> boats = m_players[playerToInt(n)].getBoatsList();
+		ArrayList<Bateau> boats = p.getBoatsList();
 
 		for(int y = 0; y < 10; ++y)
 		{
@@ -159,6 +159,9 @@ public abstract class Bataille
 
 		return matrice;
 	}
+
+	public int[][] getBoatsMatrice(final PLAYER_N n)
+	{ return getBoatsMatrice(m_players[playerToInt(n)]); }
 	
 	public abstract TYPE getType();
 
