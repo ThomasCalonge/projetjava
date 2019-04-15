@@ -106,9 +106,13 @@ public abstract class Joueur
 	 * @param data les données à être introduite
 	 */
 	public void pushAttackData (final AttackData data) { m_attackDatas.add(data); }
+
+	/**
+	 * Retourne la liste des attaques du joueurs
+	 * @return liste des attaquesdu joueurs
+	 */
 	public ArrayList<AttackData> getAttackDatas () { return m_attackDatas; }
 
-	
 	/// Fonctions interne à la classe
 	
 	/**
