@@ -1,5 +1,10 @@
 package core;
-
+/**
+ * Bateau est une classe qui sert pour définir l'objet Bateau dans notre BatailleNavale
+ * Elle est composée d'une orientation, d'une position et d'un type}
+ * Type étant une énumération, 
+ * Il contient aussi deux variables de dégats, permettant de savoir si le bateau à était touché et si il à était coulé
+ */
 public class Bateau
 {
 	public TYPE type;
