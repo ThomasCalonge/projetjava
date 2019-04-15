@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import core.*;
+import core.Bataille.BoatPositionNotInGame;
+import core.Bataille.BoatPositionOverlaps;
 import core.Bataille.MODE;
 import core.Bataille.PLAYER_N;
 import core.Bataille.TYPE;
@@ -30,37 +32,35 @@ public class Game {
 
 	private static void init_player(Bataille b, final BatailleManager bm) throws Exception
 	{
-		if (false) {
+		switch (bm.getMode())
+		{
+			case DEMO:
+			{
+				b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.FACILE));
+				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE));
+			} break;
+        
+			case UN_JOUEUR:
+			{
+				create_player(b, PLAYER_N.ONE);
+				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
+			} break;
+
+			case DEUX_JOUEURS:
+			{
+				create_player(b, PLAYER_N.ONE);
+				create_player(b, PLAYER_N.TWO);
+			} break;
+		}
+
+		if (true) {
 			add_player_boat(b, PLAYER_N.ONE);
 			add_player_boat(b, PLAYER_N.TWO);
 		} 
 		else 
-		{
-			switch (bm.getMode())
-			{
-				case DEMO:
-				{
-					b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.FACILE));
-					b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE));
-				} break;
-
-				case UN_JOUEUR:
-				{
-					create_player(b, PLAYER_N.ONE);
-					b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
-
-					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-				} break;
-
-				case DEUX_JOUEURS:
-				{
-					create_player(b, PLAYER_N.ONE);
-					create_player(b, PLAYER_N.TWO);
-
-					b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-					b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
-				} break;
-			}	
+		{	
+			//b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+			//b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 		}
 	}
 
@@ -138,14 +138,22 @@ public class Game {
 		b.addPlayer(n,new HumanCmdPlayer(sc.nextLine(), sc));
 	}
 
-	private static void add_player_boat(Bataille b, final PLAYER_N n) {
-		System.out.println(b.getPlayer(n).getName() + " place ses bateaux");
-
-		placeAndDisplayAllPlayerBoats(b, n);
-		Helper.pass(100);
+	private static void add_player_boat(Bataille b, final PLAYER_N n) 
+	{
+		// On place les bateaux manuellement que si le joueur est humain.
+		// Si c'est une ia le positionnement se fait automatiquement
+		if (b.getPlayer(n).getType() == Joueur.TYPE.HUMAIN)
+		{
+			System.out.println(b.getPlayer(n).getName() + " place ses bateaux");
+	
+			placeAndDisplayAllPlayerBoats(b, n);
+			Helper.pass(100);
+		}
 	}
 
 	private static void placeAndDisplayAllPlayerBoats(final Bataille b, final PLAYER_N n) {
+		print(b.getPlayer(n).getBoatsList());
+		System.out.println();
 		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.PORTE_AVION);
 		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.SOUS_MARIN);
 		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.CUIRASSE);
@@ -153,8 +161,27 @@ public class Game {
 		placeAndDisplayPLayerBoat(b, n, Bateau.TYPE.ZODIAC);
 	}
 
-	private static void placeAndDisplayPLayerBoat(final Bataille b, final PLAYER_N n, final Bateau.TYPE t) {
-		b.placePlayerBoat(n, create_boat(t));
+	private static void placeAndDisplayPLayerBoat(final Bataille b, final PLAYER_N n, final Bateau.TYPE t) 
+	{
+		boolean bateauBienPlace = false;
+		while (!bateauBienPlace)
+		{
+			try
+			{
+				b.placePlayerBoat(n, create_boat(t));
+				bateauBienPlace = true;
+			}
+			catch (final BoatPositionNotInGame e)
+			{
+				System.out.println("Impossible de placer le bateau ici : le bateau sort du plateau");
+				bateauBienPlace = false;
+			}
+			catch (final BoatPositionOverlaps e)
+			{
+				System.out.println("Impossible de placer le bateau ici : le bateau est en collision avec un autre");
+				bateauBienPlace = false;
+			}
+		}
 		print(b.getPlayer(n).getBoatsList());
 		System.out.println();
 	}
@@ -189,7 +216,7 @@ public class Game {
 	}
 
 	public static void print(ArrayList<Bateau> boats) {
-		System.out.println("  A B C D E F G H I J");
+		System.out.println("  0 1 2 3 4 5 6 7 8 9");
 		for (int y = 0; y < 10; ++y) {
 			System.out.print(y + " ");
 			for (int x = 0; x < 10; ++x) {
