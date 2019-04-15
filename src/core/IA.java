@@ -27,34 +27,14 @@ public class IA extends Joueur {
 	public Couple pick_pos(ArrayList<Couple> position) {
 		int taille_tab = position.size();
 		int k = (int) (Math.random() * taille_tab);
+
 		return position.get(k);
 
 	}
 
 	public void level_ia(final Position pos, ArrayList<Bateau> bateau_ennemi, final DIFFICULTE difficulte) {
 
-		int[][] matrice = new int[10][10];
-
-		for (int y = 0; y < 10; ++y) {
-			for (int x = 0; x < 10; ++x) {
-				matrice[x][y] = 0;
-				for (Bateau b : bateau_ennemi) {
-					if (b.o == ORIENTATION.H) {
-						if (y == b.pos.y) {
-							if ((x >= b.pos.x) && (x < b.pos.x + Bateau.TYPE.toInt(b.type))) {
-								matrice[x][y] = 1;
-							}
-						}
-					} else {
-						if (x == b.pos.x) {
-							if ((y >= b.pos.y) && (y < b.pos.y + Bateau.TYPE.toInt(b.type))) {
-								matrice[x][y] = 1;
-							}
-						}
-					}
-				}
-			}
-		}
+		int[][] matrice = Bataille.getBoatsMatrice(this);
 
 		// Je crée deux listes afin d'ajouter dans la liste pos_vide les positions dans
 		// l'eau
@@ -125,6 +105,15 @@ public class IA extends Joueur {
 		default:
 			break;
 		}
+
+		//ça ne marche pas :(
+		/*if (pos_pleine.contains(position.get(k)))
+		{ 
+			pos_pleine.remove(position.get(k));
+			}
+			else{ 
+			pos_vide.remove(position.get(k));
+			}*/
 
 	}
 

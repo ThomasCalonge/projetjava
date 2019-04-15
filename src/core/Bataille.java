@@ -23,6 +23,12 @@ public abstract class Bataille
 
 	public class AttackPosNotInRange extends Exception
 	{ private static final long serialVersionUID = 5276583181437585740L; }
+
+	public class BoatPositionOverlaps extends Exception
+	{ private static final long serialVersionUID = -5375834114405107101L; }
+
+	public class BoatPositionNotInGame extends Exception
+	{ private static final long serialVersionUID = 2827550549763410108L; };
 	
 	/**
 	 * Représente les différents types d'une bataille.
@@ -118,10 +124,10 @@ public abstract class Bataille
 		m_continue = true;
 	}
 
-	public int[][] getBoatsMatrice(final PLAYER_N n)
+	public static int[][] getBoatsMatrice(final Joueur p)
 	{
 		int[][] matrice = new int[10][10];
-		ArrayList<Bateau> boats = m_players[playerToInt(n)].getBoatsList();
+		ArrayList<Bateau> boats = p.getBoatsList();
 
 		for(int y = 0; y < 10; ++y)
 		{
@@ -153,6 +159,9 @@ public abstract class Bataille
 
 		return matrice;
 	}
+
+	public int[][] getBoatsMatrice(final PLAYER_N n)
+	{ return getBoatsMatrice(m_players[playerToInt(n)]); }
 	
 	public abstract TYPE getType();
 
@@ -183,10 +192,18 @@ public abstract class Bataille
 	public final Joueur getCurrentAttackingPlayer()
 	{ return m_players[m_current_attacking_player]; }
 	
-	public void placePlayerBoat(final PLAYER_N n, final Bateau b)
+	public void placePlayerBoat(final PLAYER_N n, final Bateau b) throws BoatPositionOverlaps,BoatPositionNotInGame
 	{
 		if (m_players[playerToInt(n)].getType() == Joueur.TYPE.HUMAIN)
-			m_players[playerToInt(n)].placeBoat(b); 
+		{
+			//On test la position en premier car noBoatCollision suppose que le bateau entre entièrement dans la grille de jeu
+			if (!boatInGame(b))
+				throw new BoatPositionNotInGame();
+			else if (!noBoatCollision(n, b))
+				throw new BoatPositionOverlaps();
+			else
+				m_players[playerToInt(n)].placeBoat(b);
+		}
 		else
 			System.out.println("Appeler \"core.Bataille.placePlayerBoat\" sur un joueur non humain ne fait rien");
 	}
@@ -278,6 +295,46 @@ public abstract class Bataille
 	
 	private ATTAQUE_STATUS player_two_attacke_player_one(final Position pos)
 	{ return m_players[0].getAttacked(pos); }
+
+	/**
+	 * Cette fonction vérifie que la position est valide d'un point de vue de la collision : pas de collision avec un autre bateau
+	 */
+	private boolean noBoatCollision (final PLAYER_N n, final Bateau b)
+	{ return (b.o == ORIENTATION.H) ? noBoatCollisionH(getBoatsMatrice(n), b) : noBoatCollisionV(getBoatsMatrice(n),b); }
+
+	/**
+	 * Cette fonction vérifie que la position est valide d'un point de vue de la position : le bateau ne sort pas de la grille
+	 */
+	private boolean boatInGame (final Bateau b)
+	{ return (b.o == ORIENTATION.H) ? boatInGameH(b) : boatInGameV(b); }
+
+	private boolean boatInGameH (final Bateau b)
+	{ return (b.pos.x >= 0) && (b.pos.x + b.getSize() < 10); }
+
+	private boolean boatInGameV (final Bateau b)
+	{ return (b.pos.y >= 0) && (b.pos.y + b.getSize() < 10); }
+
+	private boolean noBoatCollisionH (final int[][] boatsMatrice, final Bateau b)
+	{
+		for (int i = 0; i < b.getSize(); ++i)
+		{
+			if (boatsMatrice[b.pos.x + i][b.pos.y] != 0)
+				return false;
+		} 
+
+		return true;
+	}
+
+	private boolean noBoatCollisionV (final int[][] boatsMatrice, final Bateau b)
+	{
+		for (int i = 0; i < b.getSize(); ++i)
+		{
+			if (boatsMatrice[b.pos.x][b.pos.y + i] != 0)
+				return false;
+		} 
+
+		return true;
+	}
 	
 	/**
 	 * Cette fonction récupère l'attaque que le joueur vient de faire et dit s'il a déjà attaqué au même endroit ou pas
