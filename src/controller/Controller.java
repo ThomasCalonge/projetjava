@@ -75,10 +75,11 @@ public class Controller {
 			}
 		});
 		
-		viewGame.getfirst().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				System.exit(0);
-			}
-		});
+		viewGame.getfirst().addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent actionEvent) {
+							System.exit(0);
+					}
+				});
 	}
 }
