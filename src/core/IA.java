@@ -12,6 +12,7 @@ class Couple {
 
 public class IA extends Joueur {
 	static private int ia_count = 0;
+
 	public enum DIFFICULTE {
 		FACILE, NORMAL, DUR,
 	}
@@ -19,13 +20,14 @@ public class IA extends Joueur {
 	// Je crée deux listes afin d'ajouter dans la liste pos_vide les positions dans
 	// l'eau
 	// et dans la liste pos_pleine les position avec bateaux
-	// Adrien: J'ai déplacé les tableaux ici sinon la fonction pick_pos ne les voyait pas.
-	// plus je les ai passé en privés et mis l'initialisation dans le constructeur de la classe (c'est plus dans l'esprit de la POO)
+	// Adrien: J'ai déplacé les tableaux ici sinon la fonction pick_pos ne les
+	// voyait pas.
+	// plus je les ai passé en privés et mis l'initialisation dans le constructeur
+	// de la classe (c'est plus dans l'esprit de la POO)
 	private ArrayList<Couple> pos_vide;
 	private ArrayList<Couple> pos_pleine;
 
-	public IA(DIFFICULTE difficulte) 
-	{
+	public IA(DIFFICULTE difficulte) {
 		super("IA" + (++ia_count));
 		pos_vide = new ArrayList<Couple>();
 		pos_pleine = new ArrayList<Couple>();
@@ -40,11 +42,15 @@ public class IA extends Joueur {
 	public Couple pick_pos(ArrayList<Couple> position) {
 		int taille_tab = position.size();
 		int k = (int) (Math.random() * taille_tab);
-		if (pos_pleine.contains(position.get(k)))
-		{ 
+		/*
+		 * Lorsque l'on pick une position, il faut la retirer de la liste des positions
+		 * possibles Sinon, l'ia risque de la reprendre plusieurs fois si le hasard le
+		 * décide. Si elle se rpéèten se sera encore plus simple qu'un mode facile, car
+		 * jamais un joueur ne ferait cela
+		 */
+		if (pos_pleine.contains(position.get(k))) {
 			pos_pleine.remove(position.get(k));
-		}
-		else{ 
+		} else {
 			pos_vide.remove(position.get(k));
 		}
 
@@ -117,15 +123,17 @@ public class IA extends Joueur {
 
 	@Override
 	public Position getAttackPos(Bataille.TYPE type) {
-		//TODO: Implémenter la sélection des coordonnées
+		// TODO: Implémenter la sélection des coordonnées
 		return null;
 	}
 
 	@Override
 	public void placeBoat(Bateau b) {
-		//Cette fonction ne devrait jamais être appelée depuis le code pour un joueur IA
-		//C'est une erreur du programmeur et non de l'utilisateur donc on utilise une assertion
-		//plutôt qu'une exception
+		// Cette fonction ne devrait jamais être appelée depuis le code pour un joueur
+		// IA
+		// C'est une erreur du programmeur et non de l'utilisateur donc on utilise une
+		// assertion
+		// plutôt qu'une exception
 		System.err.println("\"IA.placeBoat\" ne devrais jamais être appelée");
 		System.exit(-1);
 	}
