@@ -26,14 +26,16 @@ public class IA extends Joueur {
 	// de la classe (c'est plus dans l'esprit de la POO)
 	private ArrayList<Couple> pos_vide;
 	private ArrayList<Couple> pos_pleine;
+	private DIFFICULTE m_mode;
 
 	public IA(DIFFICULTE difficulte) {
 		super("IA" + (++ia_count));
 		pos_vide = new ArrayList<Couple>();
 		pos_pleine = new ArrayList<Couple>();
+
+		m_boats.add(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(4,4)));
 	}
 
-	private DIFFICULTE m_mode;
 
 	public void setMode(final DIFFICULTE mode) {
 		m_mode = mode;
@@ -124,7 +126,7 @@ public class IA extends Joueur {
 	@Override
 	public Position getAttackPos(Bataille.TYPE type) {
 		// TODO: Implémenter la sélection des coordonnées
-		return null;
+		return new Position(0,0);
 	}
 
 	@Override
