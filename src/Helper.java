@@ -27,7 +27,6 @@ public class Helper
 	 * @see java.util.Scanner
 	 */
 	static int choose_int(int a, int b, Scanner sc) {
-		int choix = 0;
 
 		if (a > b) {
 			// swap
@@ -35,6 +34,8 @@ public class Helper
 			a = b;
 			b = tmp;
 		}
+		
+		int choix = a-1;
 
 		do {
 			System.out.print(" > (" + a + ";" + b + ") ");

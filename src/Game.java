@@ -19,9 +19,9 @@ public class Game {
 
 		Bataille b = bm.create();
 
-		init_player(b, bm);
-
+		
 		try {
+			init_player(b, bm);
 			play(b);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,20 +30,20 @@ public class Game {
 		sc.close();
 	}
 
-	private static void init_player(Bataille b, final BatailleManager bm)
+	private static void init_player(Bataille b, final BatailleManager bm) throws Exception
 	{
 		switch (bm.getMode())
 		{
 			case DEMO:
 			{
-				b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.FACILE));
-				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE));
+				b.addPlayer(PLAYER_N.ONE, new IA(DIFFICULTE.FACILE,null));
+				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE,null));
 			} break;
 
 			case UN_JOUEUR:
 			{
 				create_player(b, PLAYER_N.ONE);
-				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.DUR));
+				b.addPlayer(PLAYER_N.TWO, new IA(DIFFICULTE.FACILE,b.getPlayer(PLAYER_N.ONE)));
 			} break;
 
 			case DEUX_JOUEURS:
@@ -53,14 +53,14 @@ public class Game {
 			} break;
 		}
 
-		if (true) {
+		if (false) {
 			add_player_boat(b, PLAYER_N.ONE);
 			add_player_boat(b, PLAYER_N.TWO);
 		} 
 		else 
-		{	
-			//b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
-			//b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
+		{
+			b.placePlayerBoat(PLAYER_N.ONE, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(2, 2)));
+			b.placePlayerBoat(PLAYER_N.TWO, new Bateau(Bateau.TYPE.ZODIAC, ORIENTATION.H, new Position(5, 5)));
 		}
 	}
 
@@ -88,17 +88,23 @@ public class Game {
 	private static void play(Bataille b) throws Exception {
 		System.out.println(" * LA PARTIE COMMENCE * ");
 
-		while (b.canContinue()) {
-			System.out.println("*-------------------------------*");
-			System.out.println("*-------------------------------*");
-			System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
-			print(b.getCurrentAttackingPlayer().getBoatsList());
-			System.out.println("*-------------------------------*");
-			printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
+		while (b.canContinue())
+		 {
+			if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
+			{
+				System.out.println("*-------------------------------*");
+				System.out.println("*-------------------------------*");
+				System.out.println("Le Joueur " + b.getCurrentAttackingPlayer().getName() + " attaque:");
+				print(b.getCurrentAttackingPlayer().getBoatsList());
+				System.out.println("*-------------------------------*");
+				printAttaqueData(b.getCurrentAttackingPlayer().getAttaqueData());
+			}
 			Position attackPos = b.getCurrentAttackingPlayer().getAttackPos(b.getType());
 
 			final ATTAQUE_STATUS s = b.playerAttack(attackPos);
-			System.out.println(ATTAQUE_STATUS.toString(s));
+
+			if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
+				System.out.println(ATTAQUE_STATUS.toString(s));
 
 			if (!b.attacking_player_can_reattack()) 
 			{
@@ -107,12 +113,6 @@ public class Game {
 					if ((b.getType() == Bataille.TYPE.RADAR) ||(b.getType() == Bataille.TYPE.ALERTE_ROUGE)) {
 						System.out.println("Bateau le plus proche: " + ((Radar) b).radar_reponse(attackPos));
 					}
-				}
-
-				b.switchAttackingPlayer();
-
-				if (b.getCurrentAttackingPlayer().getType() == Joueur.TYPE.HUMAIN)
-				{
 
 					System.out.println("Appuyer pour passer au Joueur suivant");
 					System.in.read();
@@ -123,10 +123,12 @@ public class Game {
 					while (i > 0) {
 						System.out.println(i--);
 						Thread.sleep(1000);
+						Helper.pass(100);
 					}
 					
-					Helper.pass(100);
 				}
+				
+				b.switchAttackingPlayer();
 			}
 		}
 

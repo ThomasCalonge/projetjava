@@ -26,13 +26,16 @@ public class IA extends Joueur {
 	// de la classe (c'est plus dans l'esprit de la POO)
 	private ArrayList<Couple> pos_vide;
 	private ArrayList<Couple> pos_pleine;
+	private int[][] matrice;
 	private DIFFICULTE m_mode;
 
-	public IA(DIFFICULTE difficulte) {
+	public IA(DIFFICULTE difficulte, Joueur ennemis) 
+	{
 		super("IA" + (++ia_count));
 		pos_vide = new ArrayList<Couple>();
 		pos_pleine = new ArrayList<Couple>();
-
+		matrice = Bataille.getBoatsMatrice(ennemis);
+		m_mode = difficulte;
 		m_boats.add(new Bateau(Bateau.TYPE.PORTE_AVION, ORIENTATION.H, new Position(4,4)));
 	}
 
@@ -59,9 +62,9 @@ public class IA extends Joueur {
 		return position.get(k);
 	}
 
-	public void level_ia(final Position pos, ArrayList<Bateau> bateau_ennemi, final DIFFICULTE difficulte) {
+	public Couple level_ia(/*final Position pos, ArrayList<Bateau> bateau_ennemi, final DIFFICULTE difficulte*/) {
 
-		int[][] matrice = Bataille.getBoatsMatrice(this);
+		Couple ret = null;
 
 		// pos_pleine ou pos_vide le type de case que c'est.
 		for (int i = 0; i < 10; i++) {
@@ -92,41 +95,44 @@ public class IA extends Joueur {
 
 		int x = (int) (Math.random() * 9);
 
-		switch (m_mode) {
+		switch (m_mode) 
+		{
 		case FACILE:
+		{
 			if (x < 5) {
-				System.out.println(pick_pos(pos_vide));
+				ret = pick_pos(pos_vide);
 			} else {
-				System.out.println(pick_pos(pos_pleine));
+				ret = pick_pos(pos_pleine);
 			}
-			break;
+		} break;
 		case NORMAL:
+		{
 			if (x < 4) {
-				System.out.println(pick_pos(pos_vide));
+				ret = pick_pos(pos_vide);
 			} else {
-				System.out.println(pick_pos(pos_pleine));
+				ret = pick_pos(pos_pleine);
 			}
-			break;
+		} break;
 		case DUR:
+		{
 			if (x < 3) {
-				System.out.println(pick_pos(pos_vide));
+				ret = pick_pos(pos_vide);
 			} else {
-				System.out.println(pick_pos(pos_pleine));
+				ret = pick_pos(pos_pleine);
 			}
-			break;
+		} break;
 
 		/// Pour gérer l'erreur.
-
-		default:
-			break;
 		}
 
+		return ret;
 	}
 
 	@Override
 	public Position getAttackPos(Bataille.TYPE type) {
+		Couple c = level_ia();
 		// TODO: Implémenter la sélection des coordonnées
-		return new Position(0,0);
+		return new Position(c.a,c.b);
 	}
 
 	@Override
